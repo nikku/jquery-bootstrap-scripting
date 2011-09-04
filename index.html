@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>bootstrap scripting; some nice scripts to for building jquery/bootstrap web applications</title>
+
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+        <script type="text/javascript" src="script/jquery.controls.js"></script>
+        <script type="text/javascript" src="script/jquery.form.js"></script>
+        <script type="text/javascript" src="script/jquery.dialog2.js"></script>
+        
+        <script type="text/javascript">
+            $(function() {
+                $(document).controls();
+            });
+        </script>
+        <style type="text/css">
+            @import url('http://twitter.github.com/bootstrap/assets/css/bootstrap-1.1.1.min.css');
+            @import url('css/jquery-dialog2/jquery.dialog2.css');
+            
+            #logo {
+                background: no-repeat scroll url('logo.png') 0 0;
+                height: 130px;
+            }
+
+            .body-content > div {
+                margin-top: 20px;
+                border-radius: 4px;
+                background: whitesmoke;
+                border: solid 1px #CCC;
+            }
+
+            .body-content > div > * {
+                margin-left: 20px;
+                margin-right: 20px;
+            }
+
+            .body-content > div > *:first-child {
+                margin-top: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <a href="http://github.com/nikku">
+            <img style="position: absolute; top: 0; right: 0; border: 0;" 
+                 src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" 
+                 alt="Fork me on GitHub">
+        </a>
+        
+        <div class="container">
+            <div class="row">
+                <div class="span16 columns body-content">
+                    <div id="logo"></div>
+                    <div>
+                        <p>
+                            This site contains some nice scripts to for building 
+                            <a href="http://jquery.com">jQuery</a> and <a href="http://twitter.github.com/bootstrap">bootstrap</a> 
+                            based web applications. 
+                            
+                            It features some jquery plugins for <a href="#modal">modal dialogs</a>. 
+                        </p>
+                        <ul class="unstyled">
+                            <li style="display: inline">
+                                <a href="https://github.com/nikku/jquery-bootstrap-scripting">Check it out on github</a>
+                            </li>
+                            <li style="display: inline">
+                                |
+                            </li>
+                            <li style="display: inline">
+                                <a href="https://github.com/Nikku/jquery-bootstrap-scripting/archives/master">Download</a>
+                            </li>
+                        </ul>
+                        <h1>The modal dialog plugin <code>jquery.dialog2.js</code></h1>
+                        <p>
+                            A jQuery modal dialog plugin based on the bootstrap CSS blue print.
+                            Has some nice features such as ajax forms / links, 
+                            page load indicators and other nice gimmics.
+                        </p>
+                        <p>
+                            <a class="ajax" rel="sample1-dialog" href="dialog1.html">See a running example</a>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

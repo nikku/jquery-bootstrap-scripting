@@ -1,0 +1,14 @@
+.modal-header h3 {
+    display: inline-block;
+}
+
+.modal.loading .modal-header .loader {
+    height: 36px;
+    width: 16px;
+    
+    margin-right: 10px;
+    
+    display: block;
+    float: left;
+    background: no-repeat scroll url('./images/ajax-loader.gif') center center;
+}
