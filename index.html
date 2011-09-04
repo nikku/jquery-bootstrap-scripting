@@ -76,7 +76,29 @@
                             page load indicators and other nice gimmics.
                         </p>
                         <p>
-                            <a class="ajax" rel="sample1-dialog" href="dialog1.html">See a running example</a>.
+                            <a class="ajax" rel="sample1-dialog" href="dialog1.html">Check out running example</a>.
+                        </p>
+                        <h3>Default behaviour</h3>
+                        <p>
+                            Dialog will show load indicator every time an ajax request is done to load
+                            new dialog pages from somewhere. If response body contains a <code>h1</code>
+                            the contents of this heading will be the new dialog title.
+                        </p>
+                        <p>
+                            If response html contains a submitable <code>form.ajax</code> a submit handler 
+                            will be bound the dialog and a submit button will be added to the dialog while
+                            the original submit button (if any) will be hidden. 
+                        </p>
+                        <p>
+                            <code>a.ajax</code> links within the dialog content will trigger loading of a new
+                            dialog <em>page</em> inside the dialog.
+                        </p>
+                        <h3>Ajaxifying links</h3>
+                        <p>
+                            In conjunction with the <code>jquery.controls</code> plugin, the dialog will register
+                            dialog open triggers for all <code>a.ajax</code> within a document. The title will be 
+                            via the links <code>title</code> attribute and the id is determined via the links´ <code>rel</code>
+                            attribute.
                         </p>
                     </div>
                 </div>
