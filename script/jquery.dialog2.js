@@ -143,22 +143,13 @@
                 .filter(function(i, e) {return $(e).text() == name;})
                 .remove();
         }, 
-        load: function(url, callback) {            
-            if (url) {
-                $(this).trigger("dialog2.ajax-start")
-                       .load(url, function() {
-                            __ajaxCompleteTrigger(this);
-                            if (callback) {
-                                callback.apply(this, arguments);
-                            }
-                        });
-            }
+        load: function(url) {
+            $(this).trigger("dialog2.ajax-start")
+                   .load(url, $.proxy(__ajaxCompleteTrigger, this));
         },
         options: function(options) {
             var self = $(this);
             var overlay = self.parents(".modal-overlay");
-            
-            console.log("[jquery.dialog2] applying options", options, this);
             
             if (options.title) {
                 $(".modal-header h3", overlay).text(options.title);
@@ -176,8 +167,6 @@
             
             if (options.closeOnOverlayClick) {
                 overlay.click(function(event) {
-                    console.log($(event.target));
-                    
                     if ($(event.target).is(".modal-overlay")) {
                         self.dialog2("close");
                     }
