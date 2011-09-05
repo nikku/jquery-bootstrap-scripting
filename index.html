@@ -123,11 +123,7 @@
                                     $('<div/>').dialog2({
                                         title: "Server notice", 
                                         content: "./notice.html", 
-                                        buttons: {
-                                            "Have seen it!": function() {
-                                                $(this).dialog2("close");
-                                            }
-                                        }
+                                        id: "server-notice"
                                     });
 
                                     event.preventDefault();
