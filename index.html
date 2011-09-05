@@ -196,6 +196,34 @@
                                 });
                             });
                         </script>
+                        
+                        <h3>In page dialog with custom title</h3>
+                        <p>
+                            <a href="#" onclick="$('#alert3').dialog2('open'); return false">Open it</a>
+                        </p>
+                        <div id="alert3">
+                            <h1>This is a special alert</h1>
+                            <p>Submit this dialog to go to heaven!</p>
+                            <form class="ajax" method="get" action="heaven.html">
+                                <input type="hidden" name="nothing" value="to-see" />
+                                <div class="actions">
+                                    <input type="submit" />
+                                </div>
+                            </form>
+                        </div>
+                        <script type="text/javascript">
+                            $(function() {
+                                $("#alert3").dialog2({
+                                    autoOpen: false,
+                                    buttons: {
+                                        Close: function() {
+                                            $(this).dialog2("close");
+                                        }
+                                    }, 
+                                    removeOnClose: false
+                                });
+                            });
+                        </script>
                         <h3>More extensive documentation</h3>
                         <p>Can be found <a href="https://github.com/Nikku/jquery-bootstrap-scripting">here</a>.
                     </div>

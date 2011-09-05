@@ -20,92 +20,94 @@
  */
 (function($) {
     
-    /** 
-     * JQuery extension to load an element without cache; 
-     * just slightly modified version of original jQuery 
-     * implementation
+    /**
+     * Ajaxifies the dialogs contents, 
+     * creating ajax forms and ajax links on .ajax annotated elements
+     * 
+     * @param dialog to be ajaxified
      */
-    $.fn.loadWithoutCache = function( url, params, callback ) {
-        // Don't do a request if no elements are being requested
-        if ( !this.length ) {
-            return this;
-        }
-
-        var off = url.indexOf( " " );
-        if ( off >= 0 ) {
-            var selector = url.slice( off, url.length );
-            url = url.slice( 0, off );
-        }
-
-        // Default to a GET request
-        var type = "GET";
-
-        // If the second parameter was provided
-        if ( params ) {
-            // If it's a function
-            if ( jQuery.isFunction( params ) ) {
-                // We assume that it's the callback
-                callback = params;
-                params = undefined;
-
-            // Otherwise, build a param string
-            } else if ( typeof params === "object" ) {
-                params = jQuery.param( params, jQuery.ajaxSettings.traditional );
-                type = "POST";
-            }
-        }
-
-        var self = this;
-
-        // Request the remote document
-        jQuery.ajax({
-            url: url,
-            type: type,
-            dataType: "html",
-            cache: false, 
-            data: params,
-            // Complete callback (responseText is used internally)
-            complete: function( jqXHR, status, responseText ) {
-                // Store the response as specified by the jqXHR object
-                responseText = jqXHR.responseText;
-                // If successful, inject the HTML into all the matched elements
-                if ( jqXHR.isResolved() ) {
-                    // #4825: Get the actual response in case
-                    // a dataFilter is present in ajaxSettings
-                    jqXHR.done(function( r ) {
-                        responseText = r;
-                    });
-                    // See if a selector was specified
-                    self.html( selector ?
-                        // Create a dummy div to hold the results
-                        jQuery("<div>")
-                            // inject the contents of the document in, removing the scripts
-                            // to avoid any 'Permission Denied' errors in IE
-                            .append(responseText.replace(rscript, ""))
-
-                            // Locate the specified elements
-                            .find(selector) :
-
-                        // If not, just inject the full result
-                        responseText );
-                }
-
-                if ( callback ) {
-                    self.each( callback, [ responseText, status, jqXHR ] );
-                }
-            }
+    function __ajaxify(dialog) {
+        
+        dialog.find("a.ajax").click(function(event) {
+            var url = $(this).attr("href");
+            
+            $(dialog).dialog2("load", url);
+            event.preventDefault();
         });
 
-        return this;
+        // Make submitable for an ajax form 
+        // if the jquery.form plugin is provided
+        if ($.fn.ajaxForm) {
+            var form = $("form.ajax", dialog).ajaxForm({
+                target: dialog,
+                success: $.proxy(__ajaxCompleteTrigger, dialog),
+                beforeSubmit: $.proxy(__ajaxStartTrigger, dialog), 
+                error: function() {
+                    throw new Error("[jquery.dialog2] form submit failed: " + $.makeArray(arguments));
+                }
+            });
+
+            // Add submit = OK button to dialog
+            // if submitable form is found 
+            var submit = form
+                            .find("input[type=submit]")
+                                .parent()
+                                .hide()
+                            .end();
+
+            if (form.length > 0 && submit.length > 0) {
+                dialog.dialog2("addButton", submit.attr("value") || "Submit", { 
+                    primary: true, click: function() {
+                        form.submit();
+                    }
+                });
+            }
+        }
+        
+        // set title if content contains a h1 element
+        var titleElement = dialog.find("h1").hide();
+        if (titleElement.length > 0) {
+            dialog.dialog2("options", { title: titleElement.text() });
+        }
+
+        // Focus first focusable element in dialog
+        dialog
+            .find("input, select, textarea, button")
+                .eq(0)
+                    .focus();
+    };
+    
+    /**
+     * Callback passed to load / form submit actions as a complete trigger
+     */
+    function __ajaxCompleteTrigger() {
+        $(this).trigger("dialog2.ajax-complete");
+    };
+    
+    function __ajaxStartTrigger() {
+        $(this).trigger("dialog2.ajax-start");
     };
     
     /**
      * Cached functions (to be memorized for some reason)
      */
-    var __removeDialog = function(event) { $(this).remove(); };
+    var __removeDialog = function(event) {$(this).remove();};
+    
+    var __DIALOG_HTML = "<div class='overlay modal-overlay'>" + 
+        "<div class='modal' style='position: relative; top: auto; left: auto; margin: 10% auto; z-index: 1'>" + 
+        "<div class='modal-header'>" +
+        "<h3></h3><span class='loader'></span>" + 
+        "<a href='#' class='close'></a>" + 
+        "</div>" + 
+        "<div class='modal-body'>" + 
+        "</div>" + 
+        "<div class='modal-footer'>" + 
+        "</div>" + 
+        "</div>" + 
+        "</div>";
     
     /**
-     * Public api for dialog2
+     * Public API methods exposed by the dialog2 plugin
      */
     var dialog2 = {
         close: function() {
@@ -114,74 +116,99 @@
             
             overlay.hide();
             dialog
-                .trigger("dialog2-closed")
+                .trigger("dialog2.closed")
                 .removeClass("opened");
         }, 
         open: function() {
             var dialog = $(this);
             
-            if (!dialog.is(".opened")) {                
+            if (!dialog.is(".opened")) {
                 dialog
-                    .trigger("dialog2-before-open")
+                    .trigger("dialog2.before-open")
                     .parents(".modal-overlay")
                         .show()
                         .end()
                     .addClass("opened")
-                    .trigger("dialog2-opened");
+                    .trigger("dialog2.opened");
             }
         }, 
         addButton: function(name, options) {          
-            addDialogButton(footer, name, options);
+            addDialogButton(this, name, options);
         }, 
         removeButton: function(name) {
             var footer = $(this).parent().find(".modal-footer");
                 
             footer
                 .find("a.btn")
-                .filter(function(i, e) { return $(e).text() == name; })
+                .filter(function(i, e) {return $(e).text() == name;})
                 .remove();
         }, 
+        load: function() {
+            
+            var args = $.makeArray(arguments);
+            var site = args.shift();
+            
+            if (site) {
+                var arg1 = args.shift();
+                
+                var params = $.isPlainObject(arg1) ? arg1 : {};
+                var callback = $.isFunction(arg1) ? arg1 : args.shift();
+                
+                $(this)
+                    .trigger("dialog2.ajax-start")
+                    .load(site, params, function(arguments) {
+                        __ajaxCompleteTrigger(this);
+                        if (callback) {
+                            callback.apply(this, arguments);
+                        }
+                    });
+            }
+        },
         options: function(options) {
             var self = $(this);
-            var handle = self.parent();
+            var overlay = self.parents(".modal-overlay");
+            
+            console.log("[jquery.dialog2] applying options", options, this);
             
             if (options.title) {
-                $(".modal-header h3", handle).text(options.title);
+                $(".modal-header h3", overlay).text(options.title);
             }
             
             if (options.buttons) {
-                $(".modal-footer", handle).empty();
+                $(".modal-footer", overlay).empty();
                 
                 $.each(options.buttons, function(name, value) {
                     addDialogButton(self, name, value);
                 });
             }
             
-            handle.unbind("click");
+            overlay.unbind("click");
             
             if (options.closeOnOverlayClick) {
-                handle.click(function(event) {
+                overlay.click(function(event) {
+                    console.log($(event.target));
+                    
                     if ($(event.target).is(".modal-overlay")) {
                         self.dialog2("close");
                     }
                 });
             }
             
-            
-            if (options.content) {
-                self.trigger("dialog2.before-load")
-                    .loadWithoutCache(options.content, loadComplete);
-            }
-            
-            self.unbind("dialog2-closed", __removeDialog);
+            self.unbind("dialog2.closed", __removeDialog);
             
             if (options.removeOnClose) {
-                self.bind("dialog2-closed", __removeDialog);
+                self.bind("dialog2.closed", __removeDialog);
             }
             
             if (options.autoOpen) {
                 self.dialog2("open");
             }
+            
+            if (options.content) {
+                self.dialog2("load", options.content);
+            }
+            
+            return this;
         }
     };
     
@@ -207,41 +234,33 @@
         
         footer.append(button);
     };
-    
-    var DIALOG_HTML = "<div class='overlay modal-overlay'>" + 
-        "<div class='modal' style='position: relative; top: auto; left: auto; margin: 10% auto; z-index: 1'>" + 
-        "<div class='modal-header'>" +
-        "<h3></h3><span class='loader'></span>" + 
-        "<a href='#' class='close'></a>" + 
-        "</div>" + 
-        "<div class='modal-body'>" + 
-        "</div>" + 
-        "<div class='modal-footer'>" + 
-        "</div>" + 
-        "</div>" + 
-        "</div>";
-    
+            
+    /**
+     * Core function for creating new dialogs.
+     * Transforms a jQuery selection into dialog content, following these rules:
+     * 
+     * // selector is a dialog? Does essentially nothing
+     * $(".selector").dialog2();
+     * 
+     * // .selector known?
+     * // creates a dialog wrapped around .selector
+     * $(".selector").dialog2();
+     * 
+     * // creates a dialog wrapped around .selector with id foo
+     * $(".selector").dialog2({id: "foo"});
+     * 
+     * // .unknown-selector not known? Creates a new dialog with id foo and no content
+     * $(".unknown-selector").dialog2({id: "foo"});
+     */
     function checkCreateDialog(element, options) {
-        
-        /**
-         * // selector is a dialog? Does essentially nothing
-         * $(".selector").dialog2();
-         * 
-         * // .selector known?
-         * // creates a dialog wrapped around .selector
-         * $(".selector").dialog2();
-         * 
-         * // creates a dialog wrapped around .selector with id #foo
-         * $(".selector").dialog2({id: "foo"});
-         * 
-         * // #foo not known? Creates a new dialog with id foo
-         * $("#foo").dialog2({id: "foo"});
-         */
+
         var selection = $(element);
         var dialog;
         
+        var created = false;
+        
         if (!selection.is(".modal-body")) {
-            var overlay = $(DIALOG_HTML).appendTo("body");
+            var overlay = $(__DIALOG_HTML).appendTo("body");
             
             $(".modal-header a.close", overlay)
                 .text(unescape("%D7"))
@@ -253,9 +272,6 @@
                 });
             
             dialog = $(".modal-body", overlay);
-            if (!dialog.length) {
-                throw new Error("No dialog");
-            }
             
             // Create dialog body from current jquery selection
             // If specified body is a div element and only one element is 
@@ -272,26 +288,37 @@
                 dialog.append(selection);
             }
             
-            dialog.bind("dialog2.before-load", function() {
-                $(this).dialog2({ buttons: localizedCancelButton() })
+            dialog.bind("dialog2.ajax-start", function() {
+                $(this).dialog2("options", { buttons: localizedCancelButton() })
                        .parent().addClass("loading");
             });
             
-            dialog.bind("dialog2.load-complete", function() {
-                $(this).parent().removeClass("loading")
+            dialog.bind("dialog2.ajax-complete", function() {
+                var self = $(this);
+                
+                self.parent().removeClass("loading");
+                __ajaxify(self);
             });
             
             if (options.id) {
                 dialog.attr("id", options.id);
             }
+            
+            // we just created this one
+            created = true;
         } else {
             dialog = selection;
         }
         
-        if (!dialog.is(".modal-body")) {
-            throw new Error("Dialog is not a modal dialogs body");
-        }
+        // Apply options to make title and stuff shine
+        dialog.dialog2("options", options);
         
+        // We will ajaxify its contents when its new
+        // aka apply ajax styles in case this is a inpage dialog
+        if (created) {
+            __ajaxify(dialog);
+        }
+                
         return dialog;
     };
     
@@ -314,66 +341,6 @@
         return option;
     };
     
-    /**
-     * Load complete handler function to make the whole ajax stuff work
-     */
-    function loadComplete() {
-        var dialog = $(this);
-        
-        dialog.trigger("dialog2.load-complete");
-        
-        dialog.find("a.ajax").click(function(event) {
-            var url = $(this).attr("href");
-            
-            event.preventDefault();
-            dialog
-                .trigger("dialog2.before-load")
-                .loadWithoutCache(url, function(data, status, request) {
-                    $(dialog).html(data);
-                    loadComplete.call(dialog, data, status, request);
-                });
-        });
-
-        if ($.fn.ajaxForm) {
-            // Add submit = OK button to dialog2
-            // if submitable form is found
-            var form = $("form.ajax", dialog).ajaxForm({
-                target: dialog,
-                success: loadComplete,
-                beforeSubmit: function() {
-                    dialog.trigger("dialog2.before-load");
-                }, 
-                cache: false
-            });
-
-            var submit = form
-                            .find("input[type=submit]")
-                                .parent()
-                                .hide()
-                            .end();
-
-            if (form.length > 0 && submit.length > 0) {
-                dialog.dialog2("addButton", submit.attr("value"), { 
-                    primary: true, click: function() {
-                        form.submit();
-                    }
-                });
-            }
-        }
-        
-        // set title if content contains a h1 element
-        var titleElement = $(dialog).find("h1").hide();
-        if (titleElement.length > 0) {
-            $(dialog).dialog2({title: titleElement.text()});
-        }
-
-        // Focus first focusable element in dialog
-        $(dialog)
-            .find("input, select, textarea, button")
-                .eq(0)
-                    .focus();
-    };
-    
     $.extend($.fn, {
         
         /**
@@ -391,24 +358,20 @@
          * 
          * $(".selector").dialog2("method", arguments);
          */
-        dialog2: function() {            
+        dialog2: function() {
             var args = $.makeArray(arguments);
             
             var arg0 = args.shift();
             if (dialog2[arg0]) {
                 return dialog2[arg0].apply(this, args);
             } else {
-                var options = {};
+                var options = $.extend(true, {}, $.fn.dialog2.defaults);
 
                 if ($.isPlainObject(arg0)) {
-                    options = $.extend(true, {}, $.fn.dialog2.defaults, arg0);
-                }            
+                    options = $.extend(true, options, arg0);
+                }
                 
-                var dialog = checkCreateDialog(this, options);
-                
-                $(dialog).dialog2("options", options);
-                
-                return dialog;
+                return checkCreateDialog(this, options);
             }
         }
     });
