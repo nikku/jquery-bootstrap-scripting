@@ -77,9 +77,13 @@
                         </p>
                         <h3>A simple dialog page flow</h3>
                         <p>
+                            The dialog plugin allows navigation via ajax links as well as forms.
+                            Additionally navigation in the dialog can be programmatically controlled.
+                        </p>
+                        <p>
                             <a class="ajax" rel="sample1-dialog" href="dialog1.html">Check out running example</a>.
                         </p>
-                        <h4>Source</h4>
+                        <h5>Source</h5>
                         <p>Embedding the dialog in a page</p>
                         <script src="https://gist.github.com/1193588.js?file=gistfile1.txt"></script>
                         <p>Contents of first dialog page</p>
@@ -106,6 +110,10 @@
                         
                         <h3>Loading server content (programmatic way)</h3>
                         <p>
+                            It is possible to pass a <code>content</code> attribute to the dialogs constructor
+                            to make the dialog display a certain web page.
+                        </p>
+                        <p>
                             <a href="#" id="show-server-notice-link">Show me some server content!</a>
                         </p>
                         <script type="text/javascript">
@@ -120,16 +128,18 @@
                                             }
                                         }
                                     });
-                                    
+
                                     event.preventDefault();
                                 });
                             });
                         </script>
-                        <h3>Ajaxifying links</h3>
+                        <h5>Source</h5>
+                        <script src="https://gist.github.com/1195907.js?file=gistfile1.html"></script>
+                        <h3>Automatically ajaxifying links on a web page</h3>
                         <p>
                             In conjunction with the <code>jquery.controls</code> plugin, the dialog will register
                             dialog open triggers for all <code>a.ajax</code> within a document. The title will be 
-                            via the links <code>title</code> attribute and the id is determined via the links´ <code>rel</code>
+                            via the links <code>title</code> attribute and the id is determined via the links <code>rel</code>
                             attribute.
                         </p>
                         <h3>In page dialogs</h3>
@@ -158,6 +168,8 @@
                                 });
                             });
                         </script>
+                        <h5>Source</h5>
+                        <script src="https://gist.github.com/1195900.js?file=gistfile1.html"></script>
                         <p>
                             Aggregating a number of elements: 
                             <a href="#" onclick="$('#alert2').dialog2('open'); return false">Open dialog</a>
@@ -196,10 +208,31 @@
                                 });
                             });
                         </script>
+                        <h5>Source</h5>
+                        <script src="https://gist.github.com/1195893.js?file=gistfile1.html"></script>
                         
-                        <h3>In page dialog with custom title</h3>
+                        <h3>Dialog customizations based on its content</h3>
                         <p>
-                            <a href="#" onclick="$('#alert3').dialog2('open'); return false">Open it</a>
+                            The dialog will change its apperance and behaviour based on its contents: 
+                        </p>
+                        <ul style="margin-left: 50px;">
+                            <li>
+                                If the content contains a <code>h1</code>, the text content of the 
+                                heading will be used as the dialogs <code>title</code>.
+                            </li>
+                            <li>
+                                If the content contains a <code>a.ajax</code> elements, 
+                                the dialog will make the links navigate to new pages
+                                within the dialog.
+                            </li>
+                            <li>
+                                If the dialog content contains a <code>form.ajax</code> the form 
+                                submit will be bound to the dialog. Additionally a <code>submit</code> button
+                                will be created based on the label of the first submit found in the form (if any).
+                            </li>
+                        </ul>
+                        <p>
+                            <a href="#" onclick="$('#alert3').dialog2('open'); return false">Demonstrate that!</a>
                         </p>
                         <div id="alert3">
                             <h1>This is a special alert</h1>
@@ -224,6 +257,9 @@
                                 });
                             });
                         </script>
+                        <h5>Source</h5>
+                        <script src="https://gist.github.com/1195873.js?file=gistfile1.html"></script>
+                        
                         <h3>More extensive documentation</h3>
                         <p>Can be found <a href="https://github.com/Nikku/jquery-bootstrap-scripting">here</a>.
                     </div>
