@@ -75,10 +75,11 @@
                             Has some nice features such as ajax forms / links, 
                             page load indicators and other nice gimmics.
                         </p>
+                        <h3>A simple dialog page flow</h3>
                         <p>
                             <a class="ajax" rel="sample1-dialog" href="dialog1.html">Check out running example</a>.
                         </p>
-                        <h3>Source for running example</h3>
+                        <h4>Source</h4>
                         <p>Embedding the dialog in a page</p>
                         <script src="https://gist.github.com/1193588.js?file=gistfile1.txt"></script>
                         <p>Contents of first dialog page</p>
@@ -109,6 +110,28 @@
                             via the links <code>title</code> attribute and the id is determined via the links´ <code>rel</code>
                             attribute.
                         </p>
+                        <h3>In page dialogs</h3>
+                        <p>
+                            <a href="#" onclick="$('#alert').dialog2('open');">Open</a>
+                            in page dialog <em>no AJAX is needed here</em>
+                        </p>
+                        <div id="alert">
+                            <p>This is an alert! Just want to inform you about that.</p>
+                        </div>
+                        <script type="text/javascript">
+                            $("#alert").dialog2({
+                                title: "Alert", 
+                                autoOpen: false,
+                                buttons: {
+                                    Close: { 
+                                        primary: true, 
+                                        click: function() {
+                                            $(this).dialog2("close");
+                                        }
+                                    }
+                                }
+                            });
+                        </script>
                         <h3>More extensive documentation</h3>
                         <p>Can be found <a href="https://github.com/Nikku/jquery-bootstrap-scripting">here</a>.
                     </div>
