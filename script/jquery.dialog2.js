@@ -143,25 +143,15 @@
                 .filter(function(i, e) {return $(e).text() == name;})
                 .remove();
         }, 
-        load: function() {
-            
-            var args = $.makeArray(arguments);
-            var site = args.shift();
-            
-            if (site) {
-                var arg1 = args.shift();
-                
-                var params = $.isPlainObject(arg1) ? arg1 : null;
-                var callback = $.isFunction(arg1) ? arg1 : args.shift();
-                
-                $(this)
-                    .trigger("dialog2.ajax-start")
-                    .load(site, params, function(arguments) {
-                        __ajaxCompleteTrigger(this);
-                        if (callback) {
-                            callback.apply(this, arguments);
-                        }
-                    });
+        load: function(url, callback) {            
+            if (url) {
+                $(this).trigger("dialog2.ajax-start")
+                       .load(url, function() {
+                            __ajaxCompleteTrigger(this);
+                            if (callback) {
+                                callback.apply(this, arguments);
+                            }
+                        });
             }
         },
         options: function(options) {
