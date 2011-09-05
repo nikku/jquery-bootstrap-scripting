@@ -151,7 +151,7 @@
             if (site) {
                 var arg1 = args.shift();
                 
-                var params = $.isPlainObject(arg1) ? arg1 : {};
+                var params = $.isPlainObject(arg1) ? arg1 : null;
                 var callback = $.isFunction(arg1) ? arg1 : args.shift();
                 
                 $(this)
