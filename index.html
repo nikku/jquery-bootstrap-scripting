@@ -103,6 +103,28 @@
                             <code>a.ajax</code> links within the dialog content will trigger loading of a new
                             dialog <em>page</em> inside the dialog.
                         </p>
+                        
+                        <h3>Loading server content (programmatic way)</h3>
+                        <p>
+                            <a href="#" id="show-server-notice-link">Show me some server content!</a>
+                        </p>
+                        <script type="text/javascript">
+                            $(function() {
+                                $("#show-server-notice-link").click(function(event) {
+                                    $('<div/>').dialog2({
+                                        title: "Server notice", 
+                                        content: "./notice.html", 
+                                        buttons: {
+                                            "Have seen it!": function() {
+                                                $(this).dialog2("close");
+                                            }
+                                        }
+                                    });
+                                    
+                                    event.preventDefault();
+                                });
+                            });
+                        </script>
                         <h3>Ajaxifying links</h3>
                         <p>
                             In conjunction with the <code>jquery.controls</code> plugin, the dialog will register
@@ -112,24 +134,66 @@
                         </p>
                         <h3>In page dialogs</h3>
                         <p>
-                            <a href="#" onclick="$('#alert').dialog2('open');">Open</a>
-                            in page dialog <em>no AJAX is needed here</em>
+                            From a single <code>div</code> element: 
+                            <a href="#" onclick="$('#alert').dialog2('open'); return false">Open dialog</a>
+                            <em>no AJAX is needed here</em>
                         </p>
                         <div id="alert">
                             <p>This is an alert! Just want to inform you about that.</p>
                         </div>
                         <script type="text/javascript">
-                            $("#alert").dialog2({
-                                title: "Alert", 
-                                autoOpen: false,
-                                buttons: {
-                                    Close: { 
-                                        primary: true, 
-                                        click: function() {
-                                            $(this).dialog2("close");
+                            $(function() {
+                                $("#alert").dialog2({
+                                    title: "Alert", 
+                                    autoOpen: false,
+                                    buttons: {
+                                        Close: { 
+                                            primary: true, 
+                                            click: function() {
+                                                $(this).dialog2("close");
+                                            }
                                         }
-                                    }
-                                }
+                                    }, 
+                                    removeOnClose: false
+                                });
+                            });
+                        </script>
+                        <p>
+                            Aggregating a number of elements: 
+                            <a href="#" onclick="$('#alert2').dialog2('open'); return false">Open dialog</a>
+                            <em>no AJAX is needed here</em>
+                        </p>
+                        <p class="custom-dialog-content">
+                            foo
+                        </p>
+                        <p class="custom-dialog-content">
+                            and
+                        </p>
+                        <p class="custom-dialog-content">
+                            bar
+                        </p>
+                        <p class="custom-dialog-content">
+                            makes
+                        </p>
+                        <p class="custom-dialog-content">
+                            foobar
+                        </p>
+                        <script type="text/javascript">
+                            $(function() {
+                                $(".custom-dialog-content").dialog2({
+                                    title: "Alert", 
+                                    id: "alert2",
+                                    autoOpen: false,
+                                    buttons: {
+                                        Close: { 
+                                            primary: true, 
+                                            click: function() {
+                                                $(this).dialog2("close");
+                                            }
+                                        }
+                                    }, 
+                                    removeOnClose: false
+                                });
                             });
                         </script>
                         <h3>More extensive documentation</h3>
