@@ -14,6 +14,7 @@ Features
 * Loading indicator
 * Localization
 * No dependencies to jQuery.UI
+* Control via [`html` markup](#Let the HTML markup decide) possible
 
 Dependencies
 ------------
@@ -22,7 +23,7 @@ Dependencies
 * [jQuery.controls](https://github.com/Nikku/jquery-controls) plugin  >= 0.9 for ajax link binding support
 * [Bootstrap styles](http://twitter.github.com/bootstrap) to look nice
 
-Basic usage
+Controlling a dialog with JavaScript
 -----------
 
 * `$(selector | element | text).dialog2(options)` creates a dialog with the given `options` from an element or selector. If the selected element exists, it will be turned into the body of the newly created dialog.
@@ -31,7 +32,7 @@ Basic usage
 Options
 -------
 
-The `dialog2()` method accepts an options object like 
+The `dialog2()` method accepts an *options object*:
 
 ```javascript
 {
@@ -40,7 +41,18 @@ The `dialog2()` method accepts an options object like
   buttons: {
     name: callback | object
   }, 
-  closeOnOverlayClick: true | false // Should the dialog be closed on overlay click?
+  closeOnOverlayClick: true | false, // Should the dialog be closed on overlay click?
+  removeOnClose: true | false // Should the dialog be removed from the document when it is closed?
+}
+```
+
+When adding buttons to a dialog, a *button options object* can be passed to it instead of a callback:
+
+```javascript
+{
+  click: function() { }, // callback to execute on button click (has this bound to the dialog)
+  primary: true | false, // if this button is the primary button (will be styled accordingly)
+  additionalClasses: "info" // additional classes to be attached to the button
 }
 ```
 
@@ -48,7 +60,21 @@ API
 ---
 
 * `open()`: Opens the dialog (essentially shows it if it is still hidden)
-* `close()`: Closes the dialog and removes it from the document
+* `close()`: Closes the dialog and removes it from the document (if configured)
 * `options(options)`: Applies the given options to the dialog
 * `addButton(label, options)`: Adds a button with the given `label` to the dialog. If `options` is a function binds the click or "enter" action of the button to it. Accepts a `{ click: callback, primary: true | false }` options object too to customize the look and feel of the button.
 * `removeButton(label)`: Removes the button with the specified `label` from the list of buttons
+
+Let the markup rule
+-------------------
+
+The dialog has some distinct features which make it totally controllable via `html` markup. 
+
+* When the [jquery-controls](https://github.com/Nikku/jquery-controls) plugin is added to a website, `a.ajax` links will open a dialog which displays the content behind their `href`.
+* If the dialog content updates, a dialog will change its title to the contents of the first `h1` element found in it. Additionally its buttons are updated based on the buttons found inside the `.actions` element of the dialog content. 
+* `.ajax` forms will be submitted asynchronously and the result will be displayed in the dialog.
+
+Check out some examples
+-----------------------
+
+Go to [the plugins web page](http://nikku.github.com/jquery-bootstrap-scripting/) to check out a number of examples on usage.
