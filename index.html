@@ -85,7 +85,7 @@
                             <a class="ajax" rel="sample1-dialog" href="dialog1.html">Check out running example</a>.
                         </p>
                         <h5>Source</h5>
-                        <p>Embedding the dialog in a page</p>
+                        <p>Embedding the dialog in a page (see <a href="#automatic-links">automatic links</a>)</p>
                         <script src="https://gist.github.com/1193588.js?file=gistfile1.txt"></script>
                         <p>Contents of first dialog page</p>
                         <script src="https://gist.github.com/1193589.js?file=gistfile1.html"></script>
@@ -132,7 +132,7 @@
                         </script>
                         <h5>Source</h5>
                         <script src="https://gist.github.com/1195907.js?file=gistfile1.html"></script>
-                        <h3>Automatically ajaxifying links on a web page</h3>
+                        <h3 id="automatic-links">Automatically ajaxifying links on a web page</h3>
                         <p>
                             In conjunction with the <code>jquery.controls</code> plugin, the dialog will register
                             dialog open triggers for all <code>a.ajax</code> within a document. The title will be 
@@ -214,18 +214,23 @@
                         </p>
                         <ul style="margin-left: 50px;">
                             <li>
-                                If the content contains a <code>h1</code>, the text content of the 
-                                heading will be used as the dialogs <code>title</code>.
+                                The first <code>h1</code> text content is used as the dialogs <code>title</code>.
                             </li>
                             <li>
-                                If the content contains a <code>a.ajax</code> elements, 
-                                the dialog will make the links navigate to new pages
-                                within the dialog.
+                                <code>a.ajax</code> elements in the dialogs content
+                                navigate to new pages within the dialog.
                             </li>
                             <li>
-                                If the dialog content contains a <code>form.ajax</code> the form 
-                                submit will be bound to the dialog. Additionally a <code>submit</code> button
-                                will be created based on the label of the first submit found in the form (if any).
+                                <code>form.ajax</code> elements are ajax-submitted
+                                and the response is displayed as the new content
+                                of the dialog.
+                            </li>
+                            <li>
+                                All elements (<code>input[type=submit], input[type=reset], input[type=button], button, .btn</code>)
+                                within a <code>.actions</code> element inside the dialog body are 
+                                treated as buttons and will be added to the dialog itself.                                 
+                                As they are added to the dialog, they inherit their class attributes 
+                                and their click behaviour (e.g. form submits or reset buttons will be
                             </li>
                         </ul>
                         <p>
@@ -256,6 +261,38 @@
                         </script>
                         <h5>Source</h5>
                         <script src="https://gist.github.com/1195873.js?file=gistfile1.html"></script>
+                        
+                        <p>
+                            Or let me at least 
+                            <a href="#" onclick="$('#alert4').dialog2('open'); return false">
+                                decide on my favourite button color!
+                            </a>
+                        </p>
+                        <div id="alert4">
+                            <h1>Decision</h1>
+                            <p>Decide on an option</p>
+                            <div class="actions">
+                                <a class="btn info" href="#">Info</a>
+                                <a class="btn success" href="#">Success</a>
+                                <button class="danger">Danger</button>
+                            </div>
+                        </div>
+                        <script type="text/javascript">
+                            $(function() {
+                                $("#alert4 .actions > *").click(function() {
+                                    alert("You chose " + $(this).text());
+                                });
+                                
+                                $("#alert4").dialog2({
+                                    autoOpen: false,
+                                    removeOnClose: false
+                                }).dialog2("addButton", "Close", function() {
+                                    $(this).dialog2("close");
+                                });
+                            });
+                        </script>
+                        <h5>Source</h5>
+                        <script src="https://gist.github.com/1201643.js?file=gistfile1.html"></script>
                         
                         <h3>More extensive documentation</h3>
                         <p>Can be found <a href="https://github.com/Nikku/jquery-bootstrap-scripting">here</a>.

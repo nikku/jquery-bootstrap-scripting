@@ -27,18 +27,17 @@
      * @param dialog to be ajaxified
      */
     function __ajaxify(dialog) {
-        
         dialog.find("a.ajax").click(function(event) {
             var url = $(this).attr("href");
             
             $(dialog).dialog2("load", url);
             event.preventDefault();
-        });
-
+        }).removeClass("ajax");
+        
         // Make submitable for an ajax form 
         // if the jquery.form plugin is provided
         if ($.fn.ajaxForm) {
-            var form = $("form.ajax", dialog).ajaxForm({
+            $("form.ajax", dialog).ajaxForm({
                 target: dialog,
                 success: $.proxy(__ajaxCompleteTrigger, dialog),
                 beforeSubmit: $.proxy(__ajaxStartTrigger, dialog), 
@@ -46,23 +45,27 @@
                     throw new Error("[jquery.dialog2] form submit failed: " + $.makeArray(arguments));
                 }
             });
-
-            // Add submit = OK button to dialog
-            // if submitable form is found 
-            var submit = form
-                            .find("input[type=submit]")
-                                .parent()
-                                .hide()
-                            .end();
-
-            if (form.length > 0 && submit.length > 0) {
-                dialog.dialog2("addButton", submit.attr("value") || "Submit", { 
-                    primary: true, click: function() {
-                        form.submit();
-                    }
-                });
-            }
         }
+        
+        // Add buttons to dialog for all buttons found within 
+        // a .actions area inside the dialog
+        $(".actions", dialog)
+            .hide()
+            .find("input[type=submit], input[type=button], input[type=reset], button, .btn")
+                .each(function() {
+                    var button = $(this);
+                    var name = button.is("input") ? button.val() || button.attr("type") : button.text();
+
+                    dialog.dialog2("addButton", name, {
+                        primary: button.is("input[type=submit]"),
+                        additionalClasses: button.attr("class"), 
+                        click: function(event) {
+                            // simulate click on the original button
+                            // to not destroy any event handlers
+                            button.click();
+                        }
+                    });
+                });
         
         // set title if content contains a h1 element
         var titleElement = dialog.find("h1").hide();
@@ -71,10 +74,7 @@
         }
 
         // Focus first focusable element in dialog
-        dialog
-            .find("input, select, textarea, button")
-                .eq(0)
-                    .focus();
+        dialog.find("input, .btn, select, textarea, button").eq(0).focus();
     };
     
     /**
@@ -211,6 +211,14 @@
             button.addClass("primary");
         }
         
+        if (options.primary) {
+            button.addClass("primary");
+        }
+        
+        if (options.additionalClasses) {
+            button.addClass(options.additionalClasses);
+        }
+        
         footer.append(button);
     };
             
@@ -243,7 +251,9 @@
             
             $(".modal-header a.close", overlay)
                 .text(unescape("%D7"))
-                .click(function() {
+                .click(function(event) {
+                    event.preventDefault();
+                    
                     $(this)
                         .parents(".modal")
                         .find(".modal-body")
