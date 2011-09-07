@@ -36,6 +36,7 @@ The `dialog2()` method accepts an *options object*:
 
 ```javascript
 {
+  id: "my-dialog", // id which (if specified) will be added to the dialog to make it accessible later 
   autoOpen: true | false, // Should the dialog be automatically opened?
   title: "Title of the dialog", 
   buttons: {
