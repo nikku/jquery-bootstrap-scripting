@@ -9,7 +9,7 @@
     z-index: 2000;
 }
 
-.modal-header h3 {
+.modal .modal-header h3 {
     display: inline-block;
 }
 
@@ -22,4 +22,15 @@
     display: block;
     float: left;
     background: no-repeat scroll url('./images/ajax-loader.gif') center center;
+}
+
+.modal .modal-header .close {
+    font-size: 20px;
+    font-weight: bold;
+    color: #888;
+}
+
+.modal .modal-header .close:hover {
+    text-decoration: none;
+    color: #333;
 }
