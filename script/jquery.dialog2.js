@@ -99,11 +99,14 @@
      */
     function __focus(dialog) {
         // Focus first focusable element in dialog
-        var focusable = dialog.find("a, input, .btn, select, textarea, button").eq(0);
+        var focusable = dialog.find("a, input:not(*[type=hidden]), .btn, select, textarea, button")
+                              .filter(function() {
+                                  return $(this).parents(".actions").length == 0;
+                              }).eq(0);
         
         // Which might be a button, too
         if (!focusable.length) {
-            focusable = dialog.parent().find(".actions").find("input[type=submit], input[type=button], .btn, button");
+            focusable = dialog.parent().find(".modal-footer").find("input[type=submit], input[type=button], .btn, button");
             if (focusable.length) {
                 focusable = focusable.eq(focusable.length - 1);
             }
