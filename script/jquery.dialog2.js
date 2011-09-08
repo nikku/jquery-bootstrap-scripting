@@ -79,9 +79,8 @@
         if (titleElement.length > 0) {
             dialog.dialog2("options", {title: titleElement.text()});
         }
-
-        // Focus first focusable element in dialog
-        dialog.find("input, .btn, select, textarea, button").eq(0).focus();
+        
+        __focus(dialog);
     };
     
     /**
@@ -93,6 +92,24 @@
     
     function __ajaxStartTrigger() {
         $(this).trigger("dialog2.ajax-start");
+    };
+    
+    /**
+     * Put focus on the dialog
+     */
+    function __focus(dialog) {
+        // Focus first focusable element in dialog
+        var focusable = dialog.find("a, input, .btn, select, textarea, button").eq(0);
+        
+        // Which might be a button, too
+        if (!focusable.length) {
+            focusable = dialog.parent().find(".actions").find("input[type=submit], input[type=button], .btn, button");
+            if (focusable.length) {
+                focusable = focusable.eq(focusable.length - 1);
+            }
+        }
+        
+        focusable.focus();
     };
     
     /**
@@ -139,6 +156,8 @@
                         .end()
                     .addClass("opened")
                     .trigger("dialog2.opened");
+                    
+                __focus(dialog);
             }
         }, 
         addButton: function(name, options) {          
