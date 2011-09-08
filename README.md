@@ -60,17 +60,25 @@ When adding buttons to a dialog, a *button options object* can be passed to it i
 * `open()`: Opens the dialog (essentially shows it if it is still hidden)
 * `close()`: Closes the dialog and removes it from the document (if configured)
 * `options(options)`: Applies the given options to the dialog
-* `addButton(label, options)`: Adds a button with the given `label` to the dialog. If `options` is a function binds the click or "enter" action of the button to it. Accepts a `{ click: callback, primary: true | false }` options object too to customize the look and feel of the button.
+* `addButton(label, options)`: Adds a button with the given `label` to the dialog. If `options` is a function binds the click or "enter" action of the button to it. Accepts a *button options object* too to customize the look and feel of the button.
 * `removeButton(label)`: Removes the button with the specified `label` from the list of buttons
 
 ## Let the markup rule
 
 The dialog has some distinct features which make it totally controllable via `html` markup. 
 
-* When the [jquery-controls](https://github.com/Nikku/jquery-controls) plugin is added to a website, `a.open-dialog` links will open a dialog which shows in page or ajax dialogs.
+* When the [jquery-controls](https://github.com/Nikku/jquery-controls) plugin is added to a website, `a.open-dialog` links will open a dialog which shows in page or ajax content.
 * If the dialog content updates, a dialog will change its title to the contents of the first `h1` element found in it. Additionally its buttons are updated based on the buttons found inside the `.actions` element of the dialog content. 
 * `.ajax` forms will be submitted asynchronously and the result will be displayed in the dialog.
 
 ## Check out some examples
 
 Go to [the plugins web page](http://nikku.github.com/jquery-bootstrap-scripting/) to check out a number of examples on usage.
+
+Added new option, refactored jquery-controls integration and button options, updated readme
+
+option showCloseHandle: true | false can specify if the close handle should be shown
+button option `type` replaced `additionalClasses` option
+jquery-controls integration binds dialog opening to `a.open-dialog` links (was `a.ajax` before)
+support added to open in page dialogs, too 
+(fixed issue #6)
