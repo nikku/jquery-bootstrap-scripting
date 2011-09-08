@@ -35,10 +35,13 @@ The `dialog2()` method accepts an *options object*:
   autoOpen: true | false, // Should the dialog be automatically opened?
   title: "Title of the dialog", 
   buttons: {
-    name: callback | object
+    button1Label: callback | object, 
+    button2Label: callback, 
+    ...
   }, 
   closeOnOverlayClick: true | false, // Should the dialog be closed on overlay click?
-  removeOnClose: true | false // Should the dialog be removed from the document when it is closed?
+  removeOnClose: true | false, // Should the dialog be removed from the document when it is closed?
+  showCloseHandle: true | false // Should a close handle be shown?
 }
 ```
 
@@ -48,7 +51,7 @@ When adding buttons to a dialog, a *button options object* can be passed to it i
 {
   click: function() { }, // callback to execute on button click (has this bound to the dialog)
   primary: true | false, // if this button is the primary button (will be styled accordingly)
-  additionalClasses: "info" // additional classes to be attached to the button
+  type: "info" // basically additional classes to be attached to the button
 }
 ```
 
@@ -64,7 +67,7 @@ When adding buttons to a dialog, a *button options object* can be passed to it i
 
 The dialog has some distinct features which make it totally controllable via `html` markup. 
 
-* When the [jquery-controls](https://github.com/Nikku/jquery-controls) plugin is added to a website, `a.ajax` links will open a dialog which displays the content behind their `href`.
+* When the [jquery-controls](https://github.com/Nikku/jquery-controls) plugin is added to a website, `a.open-dialog` links will open a dialog which shows in page or ajax dialogs.
 * If the dialog content updates, a dialog will change its title to the contents of the first `h1` element found in it. Additionally its buttons are updated based on the buttons found inside the `.actions` element of the dialog content. 
 * `.ajax` forms will be submitted asynchronously and the result will be displayed in the dialog.
 
