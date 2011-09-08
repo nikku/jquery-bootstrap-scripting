@@ -49,28 +49,35 @@
         
         // Add buttons to dialog for all buttons found within 
         // a .actions area inside the dialog
-        $(".actions", dialog)
-            .hide()
-            .find("input[type=submit], input[type=button], input[type=reset], button, .btn")
-                .each(function() {
-                    var button = $(this);
-                    var name = button.is("input") ? button.val() || button.attr("type") : button.text();
-
-                    dialog.dialog2("addButton", name, {
-                        primary: button.is("input[type=submit]"),
-                        additionalClasses: button.attr("class"), 
-                        click: function(event) {
-                            // simulate click on the original button
-                            // to not destroy any event handlers
-                            button.click();
-                        }
-                    });
-                });
+        var actions = $(".actions", dialog).hide();
+        var buttons = actions.find("input[type=submit], input[type=button], input[type=reset], button, .btn");
+        
+        // Add buttons in reverse order, as they will appear in the
+        // desired order on the dialog then
+        $(buttons.get().reverse()).each(function() {
+            var button = $(this);
+            var name = button.is("input") ? button.val() || button.attr("type") : button.text();
+            
+            dialog.dialog2("addButton", name, {
+                primary: button.is("input[type=submit]"),
+                type: button.attr("class"), 
+                click: function(event) {
+                    // simulate click on the original button
+                    // to not destroy any event handlers
+                    button.click();
+                    
+                    if (button.is(".close-dialog")) {
+                        $(dialog).dialog2("close");
+                    }
+                }
+            });
+        });
+        
         
         // set title if content contains a h1 element
         var titleElement = dialog.find("h1").hide();
         if (titleElement.length > 0) {
-            dialog.dialog2("options", { title: titleElement.text() });
+            dialog.dialog2("options", {title: titleElement.text()});
         }
 
         // Focus first focusable element in dialog
@@ -91,7 +98,10 @@
     /**
      * Cached functions (to be memorized for some reason)
      */
-    var __removeDialog = function(event) {$(this).remove();};
+    var __removeDialog = function(event) {
+        alert("Remove dialog " + this);
+        $(this).remove();
+    };
     
     var __DIALOG_HTML = "<div class='overlay modal-overlay'>" + 
         "<div class='modal' style='position: relative; top: auto; left: auto; margin: 10% auto; z-index: 1'>" + 
@@ -175,6 +185,10 @@
             
             self.unbind("dialog2.closed", __removeDialog);
             
+            var closeHandleMode = !options.showCloseHandle ? "hide" : "show";
+            
+            $(".modal-header .close", overlay)[closeHandleMode]();
+            
             if (options.removeOnClose) {
                 self.bind("dialog2.closed", __removeDialog);
             }
@@ -207,16 +221,13 @@
                                 event.preventDefault();
                             });
         
+        // legacy
         if (options.primary) {
             button.addClass("primary");
         }
         
-        if (options.primary) {
-            button.addClass("primary");
-        }
-        
-        if (options.additionalClasses) {
-            button.addClass(options.additionalClasses);
+        if (options.type) {
+            button.addClass(options.type);
         }
         
         footer.append(button);
@@ -269,7 +280,7 @@
             // $('<div id="foo"></div>').dialog2(); $("#foo").dialog2("open");
             if (selection.is("div") && selection.length == 1) {
                 dialog.replaceWith(selection);
-                selection.addClass("modal-body");
+                selection.addClass("modal-body").show();
                 dialog = selection;
             }
             // If not, append current selection to dialog body
@@ -278,7 +289,7 @@
             }
             
             dialog.bind("dialog2.ajax-start", function() {
-                $(this).dialog2("options", { buttons: localizedCancelButton() })
+                $(this).dialog2("options", {buttons: localizedCancelButton()})
                        .parent().addClass("loading");
             });
             
@@ -351,8 +362,13 @@
             var args = $.makeArray(arguments);
             
             var arg0 = args.shift();
-            if (dialog2[arg0]) {
-                return dialog2[arg0].apply(this, args);
+            if (typeof arg0 == "string") {
+                var method = dialog2[arg0];
+                if (method) {
+                    return dialog2[arg0].apply(this, args);
+                } else {
+                    throw new Error("Unknown API method '" + arg0 + "' for jquery.dialog2 plugin");
+                }
             } else {
                 var options = $.extend(true, {}, $.fn.dialog2.defaults);
 
@@ -368,7 +384,8 @@
     $.fn.dialog2.defaults = {
         autoOpen: true, 
         closeOnOverlayClick: true, 
-        removeOnClose: true
+        removeOnClose: true, 
+        showCloseHandle: true
     };
     
     $.fn.dialog2.localization = {
@@ -399,29 +416,60 @@
      */
     if ($.fn.controls && $.fn.controls.bindings) {
         $.extend($.fn.controls.bindings, {
-            "a.ajax": function() {
-                $(this).click(function(event) {
-                    var a = $(this);
-                    
-                    var options = {
-                        modal: true,
-                        content: a.attr("href"),
-                        id: a.attr("rel"),
-                        
-                        buttons: localizedCancelButton()
-                    };
+            "a.open-dialog": function() {
+                var a = $(this).removeClass("open-dialog");
+                
+                var id = a.attr("rel");
+                var content = a.attr("href");
+                
+                var options = {
+                    modal: true
+                };
 
-                    if (a.hasClass("open-lazy")) {
-                        options.autoOpen = false;
-                    }
+                var element;
 
-                    if (a.attr("title")) {
-                        options.title = a.attr("title");
+                if (id) {
+                    var e = $("#" + id);
+                    if (e.length) element = e;
+                }
+
+                if (!element) {
+                    element = $("<div></div>");
+                    if (id) {
+                        options.id = id;
                     }
-                    
-                    $("<div></div>").dialog2(options);
-                    event.preventDefault();
+                }
+
+                if (a.attr("title")) {
+                    options.title = a.attr("title");
+                }
+                
+                $.each($.fn.dialog2.defaults, function(key, value) {
+                    if (a.attr(key)) {
+                        options[key] = a.attr(key) == "true";
+                    }
                 });
+                
+                if (content && content != "#") {
+                    options.content = content;
+                    
+                    a.click(function(event) {
+                        event.preventDefault();
+                        $(element).dialog2(options);
+                    });
+                } else {
+                    options.removeOnClose = false;
+                    options.autoOpen = false;
+                    
+                    // Pre initialize dialog
+                    $(element).dialog2(options);
+                    
+                    a.attr("href", "#")
+                     .click(function(event) {
+                         event.preventDefault();
+                         $(element).dialog2("open");
+                     });
+                }
             }
         });
     };
