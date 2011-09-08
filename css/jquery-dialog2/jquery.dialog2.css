@@ -34,3 +34,7 @@
     text-decoration: none;
     color: #333;
 }
+
+.btn:focus {
+    outline: dotted 1px #666 !important;
+}
