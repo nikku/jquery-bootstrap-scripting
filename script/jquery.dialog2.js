@@ -99,7 +99,6 @@
      * Cached functions (to be memorized for some reason)
      */
     var __removeDialog = function(event) {
-        alert("Remove dialog " + this);
         $(this).remove();
     };
     
