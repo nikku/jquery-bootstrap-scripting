@@ -1,12 +1,5 @@
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: none;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2000;
+.modal {
+     display: none;
 }
 
 .modal .modal-header h3 {
@@ -33,8 +26,4 @@
 .modal .modal-header .close:hover {
     text-decoration: none;
     color: #333;
-}
-
-.btn:focus {
-    outline: dotted 1px #666 !important;
 }
