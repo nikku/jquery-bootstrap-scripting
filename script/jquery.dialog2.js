@@ -473,7 +473,6 @@
                 }
 
                 if (!element) {
-                    element = $("<div></div>");
                     if (id) {
                         options.id = id;
                     }
@@ -494,11 +493,13 @@
                     
                     a.click(function(event) {
                         event.preventDefault();
-                        $(element).dialog2(options);
+                        $(element || "<div></div>").dialog2(options);
                     });
                 } else {
                     options.removeOnClose = false;
                     options.autoOpen = false;
+                    
+                    element = element || "<div></div>";
                     
                     // Pre initialize dialog
                     $(element).dialog2(options);
