@@ -7,7 +7,7 @@
  * Licensed under the MIT license 
  * http://www.opensource.org/licenses/mit-license.php 
  * 
- * @version: 1.0.1 (05/09/2011)
+ * @version: 1.1.0 (09/09/2011)
  * 
  * @requires jQuery >= 1.4 
  * 
@@ -19,6 +19,13 @@
  * @author nico.rehwaldt
  */
 (function($) {
+    
+    /**
+     * Returns true if value is a boolean
+     */
+    function __boolean(value) {
+        return typeof value == "boolean";
+    };
     
     /**
      * Ajaxifies the dialogs contents, 
@@ -115,15 +122,20 @@
         focusable.focus();
     };
     
+    function __getOverlay(dialog) {
+        return dialog.parent().prev(".modal-backdrop");
+    }
+    
     /**
      * Cached functions (to be memorized for some reason)
      */
     var __removeDialog = function(event) {
-        $(this).remove();
+        var dialog = $(this);
+        __getOverlay(dialog).remove();
+        dialog.remove();
     };
     
-    var __DIALOG_HTML = "<div class='overlay modal-overlay'>" + 
-        "<div class='modal' style='position: relative; top: auto; left: auto; margin: 10% auto; z-index: 1'>" + 
+    var __DIALOG_HTML = "<div class='modal'>" + 
         "<div class='modal-header'>" +
         "<h3></h3><span class='loader'></span>" + 
         "<a href='#' class='close'></a>" + 
@@ -131,7 +143,6 @@
         "<div class='modal-body'>" + 
         "</div>" + 
         "<div class='modal-footer'>" + 
-        "</div>" + 
         "</div>" + 
         "</div>";
     
@@ -141,10 +152,10 @@
     var dialog2 = {
         close: function() {
             var dialog = $(this);
-            var overlay = dialog.parents(".modal-overlay");
+            __getOverlay(dialog).hide();
             
-            overlay.hide();
             dialog
+                .parent().hide().end()
                 .trigger("dialog2.closed")
                 .removeClass("opened");
         }, 
@@ -152,12 +163,12 @@
             var dialog = $(this);
             
             if (!dialog.is(".opened")) {
+                __getOverlay(dialog).show();
+                
                 dialog
                     .trigger("dialog2.before-open")
-                    .parents(".modal-overlay")
-                        .show()
-                        .end()
                     .addClass("opened")
+                    .parent().show().end()
                     .trigger("dialog2.opened");
                     
                 __focus(dialog);
@@ -167,7 +178,7 @@
             addDialogButton(this, name, options);
         }, 
         removeButton: function(name) {
-            var footer = $(this).parent().find(".modal-footer");
+            var footer = $(this).siblings(".modal-footer");
                 
             footer
                 .find("a.btn")
@@ -180,39 +191,44 @@
         },
         options: function(options) {
             var self = $(this);
-            var overlay = self.parents(".modal-overlay");
+            var handle = self.parent();
             
             if (options.title) {
-                $(".modal-header h3", overlay).text(options.title);
+                $(".modal-header h3", handle).text(options.title);
             }
             
             if (options.buttons) {
-                $(".modal-footer", overlay).empty();
+                $(".modal-footer", handle).empty();
                 
                 $.each(options.buttons, function(name, value) {
                     addDialogButton(self, name, value);
                 });
             }
             
-            if (typeof options.closeOnOverlayClick == "boolean") {
+            if (__boolean(options.closeOnOverlayClick)) {
+                var overlay = __getOverlay(self);
                 overlay.unbind("click");
 
                 if (options.closeOnOverlayClick) {
                     overlay.click(function(event) {
-                        if ($(event.target).is(".modal-overlay")) {
+                        if ($(event.target).is(".modal-backdrop")) {
                             self.dialog2("close");
                         }
                     });
                 }
             }
             
-            self.unbind("dialog2.closed", __removeDialog);
-            var closeHandleMode = options.showCloseHandle === false ? "hide" : "show";
+            if (__boolean(options.showCloseHandle)) {
+                var closeHandleMode = options.showCloseHandle ? "show" : "hide";
+                $(".modal-header .close", handle)[closeHandleMode]();
+            }
             
-            $(".modal-header .close", overlay)[closeHandleMode]();
-            
-            if (options.removeOnClose === true) {
-                self.bind("dialog2.closed", __removeDialog);
+            if (__boolean(options.removeOnClose)) {
+                self.unbind("dialog2.closed", __removeDialog);
+                
+                if (options.removeOnClose) {
+                    self.bind("dialog2.closed", __removeDialog);
+                }
             }
             
             if (options.autoOpen === true) {
@@ -234,7 +250,7 @@
     function addDialogButton(dialog, name, options) {
         var callback = $.isFunction(options) ? options : options.click;
         
-        var footer = $(dialog).parent().find(".modal-footer");
+        var footer = $(dialog).siblings(".modal-footer");
 
         var button = $("<a href='#' class='btn'></a>")
                             .text(name)
@@ -280,9 +296,10 @@
         var created = false;
         
         if (!selection.is(".modal-body")) {
-            var overlay = $(__DIALOG_HTML).appendTo("body");
+            var overlay = $('<div class="modal-backdrop"></div>').appendTo("body").hide();
+            var handle = $(__DIALOG_HTML).appendTo("body");
             
-            $(".modal-header a.close", overlay)
+            $(".modal-header a.close", handle)
                 .text(unescape("%D7"))
                 .click(function(event) {
                     event.preventDefault();
@@ -293,7 +310,7 @@
                             .dialog2("close");
                 });
             
-            dialog = $(".modal-body", overlay);
+            dialog = $(".modal-body", handle);
             
             // Create dialog body from current jquery selection
             // If specified body is a div element and only one element is 
