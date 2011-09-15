@@ -61,7 +61,7 @@
         
         // Add buttons in reverse order, as they will appear in the
         // desired order on the dialog then
-        $(buttons.get().reverse()).each(function() {
+        buttons.each(function() {
             var button = $(this);
             var name = button.is("input") ? button.val() || button.attr("type") : button.text();
             
@@ -115,7 +115,7 @@
         if (!focusable.length) {
             focusable = dialog.parent().find(".modal-footer").find("input[type=submit], input[type=button], .btn, button");
             if (focusable.length) {
-                focusable = focusable.eq(focusable.length - 1);
+                focusable = focusable.eq(0);
             }
         }
         
@@ -236,7 +236,7 @@
             }
             
             if (options.content) {
-                self.dialog2("load", options.content);
+                self.empty().dialog2("load", options.content);
             }
             
             return this;
@@ -270,7 +270,7 @@
         
         footer.append(button);
     };
-            
+    
     /**
      * Core function for creating new dialogs.
      * Transforms a jQuery selection into dialog content, following these rules:
@@ -430,8 +430,7 @@
     $.fn.dialog2.localization = {
         "de": {
             cancel: "Abbrechen"
-        }, 
-        
+        },         
         "en": {
             cancel: "Cancel"
         }

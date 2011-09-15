@@ -1,5 +1,7 @@
 .modal {
      display: none;
+     top: 20%;
+     margin: 0 0 0 -280px;
 }
 
 .modal .modal-header h3 {
