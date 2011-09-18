@@ -41,7 +41,8 @@ The `dialog2()` method accepts an *options object*:
   }, 
   closeOnOverlayClick: true | false, // Should the dialog be closed on overlay click?
   removeOnClose: true | false, // Should the dialog be removed from the document when it is closed?
-  showCloseHandle: true | false // Should a close handle be shown?
+  showCloseHandle: true | false // Should a close handle be shown?, 
+  initialLoadText: "" // Text to be displayed when the dialogs contents are loaded
 }
 ```
 
@@ -74,11 +75,3 @@ The dialog has some distinct features which make it totally controllable via `ht
 ## Check out some examples
 
 Go to [the plugins web page](http://nikku.github.com/jquery-bootstrap-scripting/) to check out a number of examples on usage.
-
-Added new option, refactored jquery-controls integration and button options, updated readme
-
-option showCloseHandle: true | false can specify if the close handle should be shown
-button option `type` replaced `additionalClasses` option
-jquery-controls integration binds dialog opening to `a.open-dialog` links (was `a.ajax` before)
-support added to open in page dialogs, too 
-(fixed issue #6)
