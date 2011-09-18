@@ -18,7 +18,7 @@ Contains some nice [jQuery](http://jquery.com) plugins to make working with the 
 
 * [jQuery.form](http://jquery.malsup.com/form/) plugin >= 2.8 for ajax form submit 
 * [jQuery.controls](https://github.com/Nikku/jquery-controls) plugin  >= 0.9 for ajax link binding support
-* [Bootstrap styles](http://twitter.github.com/bootstrap) to look nice
+* [Bootstrap styles](http://twitter.github.com/bootstrap) to look nice (>= 1.3 recommended)
 
 ## Controlling a dialog with JavaScript
 
