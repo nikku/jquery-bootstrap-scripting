@@ -72,6 +72,34 @@ The dialog has some distinct features which make it totally controllable via `ht
 * If the dialog content updates, a dialog will change its title to the contents of the first `h1` element found in it. Additionally its buttons are updated based on the buttons found inside the `.actions` element of the dialog content. 
 * `.ajax` forms will be submitted asynchronously and the result will be displayed in the dialog.
 
+## Changing the UI
+
+### Dialog width
+
+Override the boostrap styles for `.modal` which are (as of version 1.3)
+
+```css
+.modal {
+    ...
+    width: 560px;
+    top: 50%;
+    margin: -250px 0 0 -250px;
+}
+````
+
+with your new styles for wide dialogs 
+
+```css
+.wide-modal {
+    ...
+    top: 20%;
+    width: 800px;
+    margin: 0 0 0 -400px; /* -1 * (width / 2) */ 
+}
+```
+
+and add the class `wide-modal` to big dialogs. 
+
 ## Check out some examples
 
 Go to [the plugins web page](http://nikku.github.com/jquery-bootstrap-scripting/) to check out a number of examples on usage.
