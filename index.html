@@ -7,10 +7,11 @@
         <script type="text/javascript" src="script/jquery.controls.js"></script>
         <script type="text/javascript" src="script/jquery.form.js"></script>
         <script type="text/javascript" src="script/jquery.dialog2.js"></script>
+        <script type="text/javascript" src="script/prettify.js"></script>
         
         <style type="text/css">
-            @import url('https://gist.github.com/stylesheets/gist/embed.css');
             @import url('css/bootstrap.css');
+            @import url('css/prettify.css');
             @import url('css/jquery-dialog2/jquery.dialog2.css');
             
             #logo {
@@ -52,13 +53,10 @@
         </style>
         
         <script type="text/javascript">
-            $(function() {
+            $(document).ready(function() {
+                prettyPrint();
+                
                 $(document).controls();
-            });
-        </script>
-        
-        <script type="text/javascript">
-            $(function() {
                 $(".show-source-link").click(function(event) {
                     event.preventDefault();
                     
@@ -91,10 +89,10 @@
                             <a href="#">samples</a>
                         </li>
                         <li style="float: right">
-                            <a href="https://github.com/nikku/jquery-bootstrap-scripting">documentation</a>
+                            <a href="https://github.com/Nikku/jquery-bootstrap-scripting/tree/1.2-wip">documentation</a>
                         </li>
                         <li style="float: right">
-                            <a href="https://github.com/Nikku/jquery-bootstrap-scripting/archives/master">download</a>
+                            <a href="https://github.com/Nikku/jquery-bootstrap-scripting/archives/1.2-wip">download</a>
                         </li>
                     </ul>
                     <div>
@@ -126,7 +124,7 @@
 
                         <div class="activity">
                             <p>
-                                Display a <a class="open-dialog" closeOnOverlayClick="false" showCloseHandle="false" rel="sample1-dialog">simple alert</a>.
+                                Display a <a class="open-dialog" closeOnEscape="false" closeOnOverlayClick="false" showCloseHandle="false" rel="sample1-dialog">simple alert</a>.
                                 <a class="show-source-link" href="#">(View source)</a>
                             </p>
                         </div>
@@ -135,7 +133,7 @@
                             <p>
                                 It is always beneficial to acknowledge alerts of any kind.
                                 You can close this alert if you agree. 
-                                (Note: Normaly a dialog box is not that penetrating)
+                                (Note: Normally a dialog box is not that penetrating)
                             </p>
                             <div class="actions">
                                 <button class="primary close-dialog">Understood</button>
@@ -145,15 +143,40 @@
                         <div class="source">
                             <h5>Source</h5>
                             <p>Embedding the dialog in the (see <a href="#automatic-links">automatic links</a>)</p>
-                            <!-- https://gist.github.com/1204299 -->
-                            <div class="gist-data gist-syntax">
-                                <div class="gist-highlight"><pre><div class="line" id="LC1"><span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"open-dialog"</span> <span class="na">closeOnOverlayClick=</span><span class="s">"false"</span> <span class="na">showCloseHandle=</span><span class="s">"false"</span> <span class="na">rel=</span><span class="s">"sample1-dialog"</span><span class="nt">&gt;</span>simple alert<span class="nt">&lt;/a&gt;</span></div><div class="line" id="LC2"><br></div><div class="line" id="LC3"><span class="c">&lt;!-- which is equivalent to the following JavaScript snippet --&gt;</span></div><div class="line" id="LC4"><span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;</span></div><div class="line" id="LC5">&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span></div><div class="line" id="LC6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">$</span><span class="p">(</span><span class="s2">"#sample1-dialog"</span><span class="p">).</span><span class="nx">dialog2</span><span class="p">({</span></div><div class="line" id="LC7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">showCloseHandle</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span></div><div class="line" id="LC8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">removeOnClose</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span> </div><div class="line" id="LC9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">autoOpen</span><span class="o">:</span> <span class="kc">false</span></div><div class="line" id="LC10">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">});</span></div><div class="line" id="LC11"><br></div><div class="line" id="LC12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">$</span><span class="p">(</span><span class="s2">".open-dialog"</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span></div><div class="line" id="LC13">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span></div><div class="line" id="LC14">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">$</span><span class="p">(</span><span class="s2">"#sample1-dialog"</span><span class="p">).</span><span class="nx">dialog2</span><span class="p">(</span><span class="s2">"open"</span><span class="p">);</span></div><div class="line" id="LC15">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">});</span></div><div class="line" id="LC16">&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">});</span></div><div class="line" id="LC17"><span class="nt">&lt;/script&gt;</span></div></pre></div>
-                            </div>
+                            <pre class="prettyprint lang-html">
+&lt;a class=&quot;open-dialog&quot; closeOnEscape=&quot;false&quot; closeOnOverlayClick=&quot;false&quot; showCloseHandle=&quot;false&quot; rel=&quot;sample1-dialog&quot;&gt;simple alert&lt;/a&gt;
+
+&lt;!-- which is equivalent to the following JavaScript snippet --&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+    $(function() {
+        $(&quot;#sample1-dialog&quot;).dialog2({
+            showCloseHandle: false,
+            removeOnClose: false, 
+            autoOpen: false, 
+            closeOnEscape: false, 
+            closeOnOverlayClick: false
+        });
+
+        $(&quot;.open-dialog&quot;).click(function(event) {
+            event.preventDefault();
+            $(&quot;#sample1-dialog&quot;).dialog2(&quot;open&quot;);
+        });
+    });
+&lt;/script&gt;</pre>
                             <p>The dialogs contents (read more about it <a href="#let-markup-rule">here</a>)</p>
-                            <!-- https://gist.github.com/1204305 -->
-                            <div class="gist-data gist-syntax">
-                                <div class="gist-highlight"><pre><div class="line" id="LC1"><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"sample1-dialog"</span> <span class="na">style=</span><span class="s">"display: none"</span><span class="nt">&gt;</span></div><div class="line" id="LC2">&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;h1&gt;</span>Simple alert<span class="nt">&lt;/h1&gt;</span></div><div class="line" id="LC3">&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;p&gt;</span></div><div class="line" id="LC4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;It is always beneficial to acknowledge alerts of any kind.</div><div class="line" id="LC5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You can close this alert if you agree. </div><div class="line" id="LC6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Note: Normaly a dialog box is not that penetrating)</div><div class="line" id="LC7">&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;/p&gt;</span></div><div class="line" id="LC8">&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"actions"</span><span class="nt">&gt;</span></div><div class="line" id="LC9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;button</span> <span class="na">class=</span><span class="s">"primary close-dialog"</span><span class="nt">&gt;</span>Understood<span class="nt">&lt;/button&gt;</span></div><div class="line" id="LC10">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;button</span> <span class="na">class=</span><span class="s">"danger"</span> <span class="na">onclick=</span><span class="s">"alert('You might reconsider your click behaviour!')"</span><span class="nt">&gt;</span>I don't care<span class="nt">&lt;/button&gt;</span></div><div class="line" id="LC11">&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;/div&gt;</span></div><div class="line" id="LC12"><span class="nt">&lt;/div&gt;</span></div></pre></div>
-                            </div>
+                            <pre class="prettyprint lang-html">
+&lt;div id=&quot;sample1-dialog&quot; style=&quot;display: none&quot;&gt;
+    &lt;h1&gt;Simple alert&lt;/h1&gt;
+    &lt;p&gt;
+        It is always beneficial to acknowledge alerts of any kind.
+        You can close this alert if you agree. 
+        (Note: Normally a dialog box is not that penetrating)
+    &lt;/p&gt;
+    &lt;div class=&quot;actions&quot;&gt;
+        &lt;button class=&quot;primary close-dialog&quot;&gt;Understood&lt;/button&gt;
+        &lt;button class=&quot;danger&quot; onclick=&quot;alert('You might reconsider your click behaviour!')&quot;&gt;I don't care&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
                         </div>
                     </div>
                     <div class="sample">
@@ -175,28 +198,80 @@
                         <div class="source">
                             <h5>Source</h5>
                             <p>Embedding the dialog in the (see <a href="#automatic-links">automatic links</a>)</p>
-                            <!-- https://gist.github.com/1193588 -->
-                            <div class="gist-data gist-syntax">
-                                <div class="gist-highlight"><pre><div class="line" id="LC1"><span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"ajax"</span> <span class="na">rel=</span><span class="s">"sample1-dialog"</span> <span class="na">href=</span><span class="s">"dialog1.html"</span><span class="nt">&gt;</span>Check out running example<span class="nt">&lt;/a&gt;</span></div></pre></div>
-                            </div>
+                            <pre class="prettyprint lang-html">
+&lt;a class=&quot;open-dialog&quot; rel=&quot;sample2-dialog&quot; href=&quot;dialog1.html&quot;&gt;running example&lt;/a&gt;</pre>
                             
                             <p>Contents of first dialog page</p>
-                            <!-- https://gist.github.com/1193589 -->
-                            <div class="gist-data gist-syntax">
-                                <div class="gist-highlight"><pre><div class="line" id="LC1"><span class="nt">&lt;h1&gt;</span>My Dialog<span class="nt">&lt;/h1&gt;</span> </div><div class="line" id="LC2"><span class="nt">&lt;p&gt;</span> </div><div class="line" id="LC3">&nbsp;&nbsp;&nbsp;&nbsp;This is some fine body.</div><div class="line" id="LC4">&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"ajax"</span> <span class="na">href=</span><span class="s">"./dialog2.html"</span><span class="nt">&gt;</span>Click this link<span class="nt">&lt;/a&gt;</span> (will stay in dialog).</div><div class="line" id="LC5"><span class="nt">&lt;/p&gt;</span> </div></pre></div>
-                            </div>
+                            <pre class="prettyprint lang-html">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;jQuery dialog2 plugin&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;h1&gt;My Dialog&lt;/h1&gt;
+        &lt;p&gt;
+            This is some fine body.
+            &lt;a class=&quot;ajax&quot; href=&quot;./dialog2.html&quot;&gt;Click this link&lt;/a&gt; (will stay in dialog).
+        &lt;/p&gt;
+        &lt;div class=&quot;actions&quot;&gt;
+            &lt;a class=&quot;btn close-dialog&quot; href=&quot;#&quot;&gt;Cancel&lt;/a&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre>
                             
                             <p>Contents of second dialog page</p>
-                            <!-- https://gist.github.com/1193593 -->
-                            <div class="gist-data gist-syntax">
-                                <div class="gist-highlight"><pre><div class="line" id="LC1"><span class="nt">&lt;h1&gt;</span>Thanks :-)<span class="nt">&lt;/h1&gt;</span> </div><div class="line" id="LC2"><span class="nt">&lt;p&gt;</span> </div><div class="line" id="LC3">&nbsp;&nbsp;&nbsp;&nbsp;Thanks for clicking the previous link. May you tell me your name?</div><div class="line" id="LC4"><span class="nt">&lt;/p&gt;</span> </div><div class="line" id="LC5"><span class="nt">&lt;form</span> <span class="na">class=</span><span class="s">"ajax"</span> <span class="na">method=</span><span class="s">"get"</span> <span class="na">action=</span><span class="s">"finish.html"</span><span class="nt">&gt;</span> </div><div class="line" id="LC6">&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;fieldset&gt;</span> </div><div class="line" id="LC7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"clearfix"</span><span class="nt">&gt;</span> </div><div class="line" id="LC8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">"name"</span><span class="nt">&gt;</span>Your name<span class="nt">&lt;/label&gt;</span> </div><div class="line" id="LC9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"input"</span><span class="nt">&gt;</span> </div><div class="line" id="LC10">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">name=</span><span class="s">"name"</span> <span class="na">id=</span><span class="s">"name"</span> <span class="nt">/&gt;</span> </div><div class="line" id="LC11">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;/div&gt;</span> </div><div class="line" id="LC12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;/div&gt;</span> </div><div class="line" id="LC13">&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;/fieldset&gt;</span> </div><div class="line" id="LC14">&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"actions"</span><span class="nt">&gt;</span> </div><div class="line" id="LC15">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"submit"</span> <span class="na">value=</span><span class="s">"Send"</span> <span class="na">class=</span><span class="s">"btn"</span> <span class="nt">/&gt;</span> </div><div class="line" id="LC16">&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;/div&gt;</span> </div><div class="line" id="LC17"><span class="nt">&lt;/form&gt;</span> </div></pre></div>
-                            </div>
+                            <pre class="prettyprint lang-html">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;jQuery dialog2 plugin&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;h1&gt;Thanks :-)&lt;/h1&gt;
+        &lt;p&gt;
+            Thanks for clicking the previous link. May you tell me your name?
+        &lt;/p&gt;
+        &lt;form class=&quot;ajax&quot; method=&quot;get&quot; action=&quot;finish.html&quot;&gt;
+            &lt;fieldset&gt;
+                &lt;div class=&quot;clearfix&quot;&gt;
+                    &lt;label for=&quot;name&quot;&gt;Your name&lt;/label&gt;
+                    &lt;div class=&quot;input&quot;&gt;
+                        &lt;input type=&quot;text&quot; name=&quot;name&quot; id=&quot;name&quot; /&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/fieldset&gt;
+            &lt;div class=&quot;actions&quot;&gt;
+                &lt;input type=&quot;submit&quot; value=&quot;Send&quot; class=&quot;btn&quot; /&gt;
+                &lt;a class=&quot;btn close-dialog&quot; href=&quot;#&quot;&gt;Cancel&lt;/a&gt;
+            &lt;/div&gt;
+        &lt;/form&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre>
                             
                             <p>Contents of final dialog page</p>
-                            <!-- https://gist.github.com/1193594 -->
-                            <div class="gist-data gist-syntax">
-                                <div class="gist-highlight"><pre><div class="line" id="LC1"><span class="nt">&lt;h1&gt;</span>That's really it<span class="nt">&lt;/h1&gt;</span> </div><div class="line" id="LC2"><span class="nt">&lt;p&gt;</span> </div><div class="line" id="LC3">&nbsp;&nbsp;&nbsp;&nbsp;All right, so much about this short demo.</div><div class="line" id="LC4"><span class="nt">&lt;/p&gt;</span></div><div class="line" id="LC5"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"actions"</span><span class="nt">&gt;</span></div><div class="line" id="LC6">&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;button</span> <span class="na">class=</span><span class="s">"close-dialog"</span><span class="nt">&gt;</span>Close<span class="nt">&lt;/button&gt;</span></div><div class="line" id="LC7"><span class="nt">&lt;/div&gt;</span></div></pre></div>
-                            </div>
+                            <pre class="prettyprint lang-html">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;jQuery dialog2 plugin&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;h1&gt;That's really it&lt;/h1&gt;
+        &lt;p&gt;
+            All right, so much about this short demo.
+        &lt;/p&gt;
+        &lt;script type=&quot;text/javascript&quot;&gt;
+            $(&quot;#sample2-dialog&quot;).dialog2({
+                buttons: {
+                    &quot;Close&quot;: function() {
+                        $(this).dialog2(&quot;close&quot;);
+                    } 
+                }
+            });
+        &lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre>
                         </div>
                     </div>
                     <h2>
@@ -230,6 +305,7 @@
                                 $("#show-server-notice-link").click(function(event) {
                                     $('<div/>').dialog2({
                                         title: "Server notice", 
+                                        initialLoadText: "Loading contents...",
                                         content: "./notice.html", 
                                         id: "server-notice"
                                     });
@@ -240,10 +316,21 @@
                         </script>
                         <div class="source">
                             <h5>Source</h5>
-                            <!-- https://gist.github.com/1195907 -->
-                            <div class="gist-data gist-syntax">
-                                <div class="gist-highlight"><pre><div class="line" id="LC1"><span class="nt">&lt;p&gt;</span></div><div class="line" id="LC2">&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"#"</span> <span class="na">id=</span><span class="s">"show-server-notice-link"</span><span class="nt">&gt;</span>Show me some server content!<span class="nt">&lt;/a&gt;</span></div><div class="line" id="LC3"><span class="nt">&lt;/p&gt;</span></div><div class="line" id="LC4"><span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;</span></div><div class="line" id="LC5">&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span></div><div class="line" id="LC6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">$</span><span class="p">(</span><span class="s2">"#show-server-notice-link"</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span></div><div class="line" id="LC7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">$</span><span class="p">(</span><span class="s1">'&lt;div/&gt;'</span><span class="p">).</span><span class="nx">dialog2</span><span class="p">({</span></div><div class="line" id="LC8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">title</span><span class="o">:</span> <span class="s2">"Server notice"</span><span class="p">,</span> </div><div class="line" id="LC9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">content</span><span class="o">:</span> <span class="s2">"./notice.html"</span><span class="p">,</span> </div><div class="line" id="LC10">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">id</span><span class="o">:</span> <span class="s2">"server-notice"</span></div><div class="line" id="LC11">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">});</span></div><div class="line" id="LC12"><br></div><div class="line" id="LC13">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span></div><div class="line" id="LC14">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">});</span></div><div class="line" id="LC15">&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">});</span></div><div class="line" id="LC16"><span class="nt">&lt;/script&gt;</span></div></pre></div>
-                            </div>
+                            <pre class="prettyprint lang-html">
+&lt;a href=&quot;#&quot; id=&quot;show-server-notice-link&quot;&gt;show me some server content!&lt;/a&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+    $(function() {
+        $(&quot;#show-server-notice-link&quot;).click(function(event) {
+            $('&lt;div/&gt;').dialog2({
+                title: &quot;Server notice&quot;, 
+                content: &quot;./notice.html&quot;, 
+                id: &quot;server-notice&quot;
+            });
+
+            event.preventDefault();
+        });
+    });
+&lt;/script&gt;</pre>
                         </div>
                     </div>
                     
@@ -282,10 +369,27 @@
                         </script>
                         <div class="source">
                             <h5>Source</h5>
-                            <!-- https://gist.github.com/1195900 -->
-                            <div class="gist-data gist-syntax">
-                                <div class="gist-highlight"><pre><div class="line" id="LC1"><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"alert"</span><span class="nt">&gt;</span></div><div class="line" id="LC2">&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;p&gt;</span>This is an alert! Just want to inform you about that.<span class="nt">&lt;/p&gt;</span></div><div class="line" id="LC3"><span class="nt">&lt;/div&gt;</span></div><div class="line" id="LC4"><span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;</span></div><div class="line" id="LC5">&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span></div><div class="line" id="LC6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">$</span><span class="p">(</span><span class="s2">"#alert"</span><span class="p">).</span><span class="nx">dialog2</span><span class="p">({</span></div><div class="line" id="LC7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">title</span><span class="o">:</span> <span class="s2">"Alert"</span><span class="p">,</span> </div><div class="line" id="LC8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">autoOpen</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span></div><div class="line" id="LC9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">buttons</span><span class="o">:</span> <span class="p">{</span></div><div class="line" id="LC10">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">Close</span><span class="o">:</span> <span class="p">{</span> </div><div class="line" id="LC11">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">primary</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> </div><div class="line" id="LC12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">click</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span></div><div class="line" id="LC13">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">dialog2</span><span class="p">(</span><span class="s2">"close"</span><span class="p">);</span></div><div class="line" id="LC14">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span></div><div class="line" id="LC15">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span></div><div class="line" id="LC16">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">},</span> </div><div class="line" id="LC17">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">removeOnClose</span><span class="o">:</span> <span class="kc">false</span></div><div class="line" id="LC18">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">});</span></div><div class="line" id="LC19">&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">});</span></div><div class="line" id="LC20"><span class="nt">&lt;/script&gt;</span></div></pre></div>
-                            </div>
+                            <pre class="prettyprint lang-html">
+&lt;div id=&quot;alert&quot;&gt;
+    &lt;p&gt;This is an alert! Just want to inform you about that.&lt;/p&gt;
+&lt;/div&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+    $(function() {
+        $(&quot;#alert&quot;).dialog2({
+            title: &quot;Alert&quot;, 
+            autoOpen: false,
+            buttons: {
+                Close: { 
+                    primary: true, 
+                    click: function() {
+                        $(this).dialog2(&quot;close&quot;);
+                    }
+                }
+            }, 
+            removeOnClose: false
+        });
+    });
+&lt;/script&gt;</pre>
                         </div>
                         <div class="activity">
                             <p>
@@ -330,13 +434,43 @@
                         </script>
                         <div class="source">
                         <h5>Source</h5>
-                            <!-- https://gist.github.com/1195893 -->
-                            <div class="gist-data gist-syntax">
-                                <div class="gist-highlight"><pre><div class="line" id="LC1"><span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">"custom-dialog-content"</span><span class="nt">&gt;</span></div><div class="line" id="LC2">&nbsp;&nbsp;&nbsp;&nbsp;foo</div><div class="line" id="LC3"><span class="nt">&lt;/p&gt;</span></div><div class="line" id="LC4"><span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">"custom-dialog-content"</span><span class="nt">&gt;</span></div><div class="line" id="LC5">&nbsp;&nbsp;&nbsp;&nbsp;and</div><div class="line" id="LC6"><span class="nt">&lt;/p&gt;</span></div><div class="line" id="LC7"><span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">"custom-dialog-content"</span><span class="nt">&gt;</span></div><div class="line" id="LC8">&nbsp;&nbsp;&nbsp;&nbsp;bar</div><div class="line" id="LC9"><span class="nt">&lt;/p&gt;</span></div><div class="line" id="LC10"><span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">"custom-dialog-content"</span><span class="nt">&gt;</span></div><div class="line" id="LC11">&nbsp;&nbsp;&nbsp;&nbsp;makes</div><div class="line" id="LC12"><span class="nt">&lt;/p&gt;</span></div><div class="line" id="LC13"><span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">"custom-dialog-content"</span><span class="nt">&gt;</span></div><div class="line" id="LC14">&nbsp;&nbsp;&nbsp;&nbsp;foobar</div><div class="line" id="LC15"><span class="nt">&lt;/p&gt;</span></div><div class="line" id="LC16"><span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;</span></div><div class="line" id="LC17">&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span></div><div class="line" id="LC18">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">$</span><span class="p">(</span><span class="s2">".custom-dialog-content"</span><span class="p">).</span><span class="nx">dialog2</span><span class="p">({</span></div><div class="line" id="LC19">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">title</span><span class="o">:</span> <span class="s2">"Alert"</span><span class="p">,</span> </div><div class="line" id="LC20">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">id</span><span class="o">:</span> <span class="s2">"alert2"</span><span class="p">,</span></div><div class="line" id="LC21">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">autoOpen</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span></div><div class="line" id="LC22">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">buttons</span><span class="o">:</span> <span class="p">{</span></div><div class="line" id="LC23">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">Close</span><span class="o">:</span> <span class="p">{</span> </div><div class="line" id="LC24">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">primary</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> </div><div class="line" id="LC25">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">click</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span></div><div class="line" id="LC26">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">dialog2</span><span class="p">(</span><span class="s2">"close"</span><span class="p">);</span></div><div class="line" id="LC27">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span></div><div class="line" id="LC28">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span></div><div class="line" id="LC29">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">},</span> </div><div class="line" id="LC30">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">removeOnClose</span><span class="o">:</span> <span class="kc">false</span></div><div class="line" id="LC31">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">});</span></div><div class="line" id="LC32">&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">});</span></div><div class="line" id="LC33"><span class="nt">&lt;/script&gt;</span></div></pre></div>
-                            </div>
+                            <pre class="prettyprint lang-html">
+&lt;p class=&quot;custom-dialog-content&quot;&gt;
+    foo
+&lt;/p&gt;
+&lt;p class=&quot;custom-dialog-content&quot;&gt;
+    and
+&lt;/p&gt;
+&lt;p class=&quot;custom-dialog-content&quot;&gt;
+    bar
+&lt;/p&gt;
+&lt;p class=&quot;custom-dialog-content&quot;&gt;
+    makes
+&lt;/p&gt;
+&lt;p class=&quot;custom-dialog-content&quot;&gt;
+    foobar
+&lt;/p&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+    $(function() {
+        $(&quot;.custom-dialog-content&quot;).dialog2({
+            title: &quot;Alert&quot;, 
+            id: &quot;alert2&quot;,
+            autoOpen: false,
+            buttons: {
+                Close: { 
+                    primary: true, 
+                    click: function() {
+                        $(this).dialog2(&quot;close&quot;);
+                    }
+                }
+            }, 
+            removeOnClose: false
+        });
+    });
+&lt;/script&gt;</pre>
                         </div>                      
                     </div>
-                    <h2>Let the markup rule</h2>
+                    <h2 id="let-markup-rule">Let the markup rule</h2>
                     
                     <h3>Default behaviour</h3>
                     <p>
@@ -351,14 +485,14 @@
                     </p>
                     <p>
                         <code>a.ajax</code> links within the dialog content will trigger loading of a new
-                        dialog <em>page</em> inside the dialog.
+                        dialog page <em>inside</em> the dialog.
                     </p>
                     <h3 id="automatic-links">Automatically ajaxifying links on a web page</h3>
                     <p>
                         In conjunction with the <code>jquery.controls</code> plugin, the dialog will register
-                        dialog open triggers for all <code>a.ajax</code> within a document. The title will be 
+                        dialog open for all <code>a.open-dialog</code> within a document. The title will be 
                         via the links <code>title</code> attribute and the id is determined via the links <code>rel</code>
-                        attribute.
+                        attribute (see previous examples on that).
                     </p>
                     
                     <h3>Dialog customizations based on its content</h3>
@@ -381,9 +515,12 @@
                         <li>
                             All elements (<code>input[type=submit], input[type=reset], input[type=button], button, .btn</code>)
                             within a <code>.actions</code> element inside the dialog body are 
-                            treated as buttons and will be added to the dialog itself.                                 
-                            As they are added to the dialog, they inherit their class attributes 
-                            and their click behaviour (e.g. form submits or reset buttons will be
+                            treated as buttons and <em>override</em> the dialogs current buttons.
+                            
+                            Buttons added to the dialog will inherit the original buttons class, 
+                            click behaviour and text (e.g. a button mapping to a 
+                            <code>input[type=submit]</code>
+                            will submit the form the original input was attached to). 
                         </li>
                     </ul>
                     <div class="sample">
@@ -400,16 +537,25 @@
                                 <input type="hidden" name="nothing" value="to-see" />
                                 <div class="actions">
                                     <input type="submit" />
-                                    <button class="close-dialog">Close</button>
+                                    <a class="btn close-dialog" href="#">Close</a>
                                 </div>
                             </form>
                         </div>
                         <div class="source">
                             <h5>Source</h5>
-                            <!-- https://gist.github.com/1195873 -->
-                            <div class="gist-data gist-syntax">
-                                <div class="gist-highlight"><pre><div class="line" id="LC1"><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"#"</span> <span class="na">rel=</span><span class="s">"alert3"</span> <span class="na">class=</span><span class="s">"open-dialog"</span><span class="nt">&gt;</span>Demonstrate that!<span class="nt">&lt;/a&gt;</span></div><div class="line" id="LC2"><br></div><div class="line" id="LC3"><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"alert3"</span><span class="nt">&gt;</span></div><div class="line" id="LC4">&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;h1&gt;</span>This is a special alert<span class="nt">&lt;/h1&gt;</span></div><div class="line" id="LC5">&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;p&gt;</span>Submit this dialog to go to heaven!<span class="nt">&lt;/p&gt;</span></div><div class="line" id="LC6">&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;form</span> <span class="na">class=</span><span class="s">"ajax"</span> <span class="na">method=</span><span class="s">"get"</span> <span class="na">action=</span><span class="s">"heaven.html"</span><span class="nt">&gt;</span></div><div class="line" id="LC7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"hidden"</span> <span class="na">name=</span><span class="s">"nothing"</span> <span class="na">value=</span><span class="s">"to-see"</span> <span class="nt">/&gt;</span></div><div class="line" id="LC8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"actions"</span><span class="nt">&gt;</span></div><div class="line" id="LC9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"submit"</span> <span class="nt">/&gt;</span></div><div class="line" id="LC10">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;button</span> <span class="na">class=</span><span class="s">"close-dialog"</span><span class="nt">&gt;</span>Close<span class="nt">&lt;/button&gt;</span></div><div class="line" id="LC11">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;/div&gt;</span></div><div class="line" id="LC12">&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;/form&gt;</span></div><div class="line" id="LC13"><span class="nt">&lt;/div&gt;</span></div></pre></div>
-                            </div>
+                            <pre class="prettyprint lang-html">
+&lt;a href=&quot;#&quot; rel=&quot;alert3&quot; class=&quot;open-dialog&quot;&gt;Demonstrate that!&lt;/a&gt;
+&lt;div id=&quot;alert3&quot;&gt;
+    &lt;h1&gt;This is a special alert&lt;/h1&gt;
+    &lt;p&gt;Submit this dialog to go to heaven!&lt;/p&gt;
+    &lt;form class=&quot;ajax&quot; method=&quot;get&quot; action=&quot;heaven.html&quot;&gt;
+        &lt;input type=&quot;hidden&quot; name=&quot;nothing&quot; value=&quot;to-see&quot; /&gt;
+        &lt;div class=&quot;actions&quot;&gt;
+            &lt;input type=&quot;submit&quot; /&gt;
+            &lt;a class=&quot;btn close-dialog&quot; href=&quot;#&quot;&gt;Close&lt;/a&gt;
+        &lt;/div&gt;
+    &lt;/form&gt;
+&lt;/div&gt;</pre>
                         </div>
                         
                         <div class="activity">
@@ -441,14 +587,32 @@
                         <div class="source">
                             <h5>Source</h5>
                             <!-- https://gist.github.com/1201643 -->
-                            <div class="gist-data gist-syntax">
-                                <div class="gist-highlight"><pre><div class="line" id="LC1"><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"#"</span> <span class="na">rel=</span><span class="s">"alert4"</span> <span class="na">class=</span><span class="s">"open-dialog"</span><span class="nt">&gt;</span>decide on my favourite button color!<span class="nt">&lt;/a&gt;</span></div><div class="line" id="LC2"><br></div><div class="line" id="LC3"><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"alert4"</span><span class="nt">&gt;</span></div><div class="line" id="LC4">&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;h1&gt;</span>Decision<span class="nt">&lt;/h1&gt;</span></div><div class="line" id="LC5">&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;p&gt;</span>Decide on an option<span class="nt">&lt;/p&gt;</span></div><div class="line" id="LC6">&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"actions"</span><span class="nt">&gt;</span></div><div class="line" id="LC7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"btn info"</span> <span class="na">href=</span><span class="s">"#"</span><span class="nt">&gt;</span>Info<span class="nt">&lt;/a&gt;</span></div><div class="line" id="LC8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"btn success"</span> <span class="na">href=</span><span class="s">"#"</span><span class="nt">&gt;</span>Success<span class="nt">&lt;/a&gt;</span></div><div class="line" id="LC9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;button</span> <span class="na">class=</span><span class="s">"danger"</span><span class="nt">&gt;</span>Danger<span class="nt">&lt;/button&gt;</span></div><div class="line" id="LC10">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;button</span> <span class="na">class=</span><span class="s">"dialog-close"</span><span class="nt">&gt;</span>Close<span class="nt">&lt;/button&gt;</span></div><div class="line" id="LC11">&nbsp;&nbsp;&nbsp;&nbsp;<span class="nt">&lt;/div&gt;</span></div><div class="line" id="LC12"><span class="nt">&lt;/div&gt;</span></div><div class="line" id="LC13"><br></div><div class="line" id="LC14"><span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;</span></div><div class="line" id="LC15">&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span></div><div class="line" id="LC16">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">$</span><span class="p">(</span><span class="s2">"#alert4 .actions &gt; *"</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span></div><div class="line" id="LC17">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">alert</span><span class="p">(</span><span class="s2">"You chose "</span> <span class="o">+</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">text</span><span class="p">());</span></div><div class="line" id="LC18">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">});</span></div><div class="line" id="LC19">&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">});</span></div><div class="line" id="LC20"><span class="nt">&lt;/script&gt;</span></div></pre></div>
-                            </div>
+                            <pre class="prettyprint lang-html">
+&lt;a href=&quot;#&quot; rel=&quot;alert4&quot; class=&quot;open-dialog&quot;&gt;decide on my favourite button color!&lt;/a&gt;
+
+&lt;div id=&quot;alert4&quot;&gt;
+    &lt;h1&gt;Decision&lt;/h1&gt;
+    &lt;p&gt;Decide on an option&lt;/p&gt;
+    &lt;div class=&quot;actions&quot;&gt;
+        &lt;a class=&quot;btn info&quot; href=&quot;#&quot;&gt;Info&lt;/a&gt;
+        &lt;a class=&quot;btn success&quot; href=&quot;#&quot;&gt;Success&lt;/a&gt;
+        &lt;button class=&quot;danger&quot;&gt;Danger&lt;/button&gt;
+        &lt;button class=&quot;dialog-close&quot;&gt;Close&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+    $(function() {
+        $(&quot;#alert4 .actions &gt; *&quot;).click(function() {
+            alert(&quot;You chose &quot; + $(this).text());
+        });
+    });
+&lt;/script&gt;</pre>
                         </div>
                     </div>
-                    <h2>Clarification needed?</h3>
+                    <h2>Clarification needed?</h2>
                     <p>
-                        Check out the <a href="https://github.com/Nikku/jquery-bootstrap-scripting#readme">plugin documentation</a>. 
+                        Check out the <a href="https://github.com/Nikku/jquery-bootstrap-scripting/tree/1.2-wip#readme">plugin documentation</a>. 
                     </p>
                 </div>
             </div>
