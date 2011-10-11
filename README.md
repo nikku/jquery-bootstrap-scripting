@@ -40,8 +40,9 @@ The `dialog2()` method accepts an *options object*:
     ...
   }, 
   closeOnOverlayClick: true | false, // Should the dialog be closed on overlay click?
+  closeOnEscape: true | false, // Should the dialog be closed if [ESCAPE] key is pressed?
   removeOnClose: true | false, // Should the dialog be removed from the document when it is closed?
-  showCloseHandle: true | false // Should a close handle be shown?, 
+  showCloseHandle: true | false, // Should a close handle be shown?
   initialLoadText: "" // Text to be displayed when the dialogs contents are loaded
 }
 ```
