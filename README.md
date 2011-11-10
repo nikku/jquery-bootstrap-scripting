@@ -100,6 +100,42 @@ with your new styles for wide dialogs
 
 and add the class `wide-modal` to big dialogs. 
 
+## Extending the dialog
+
+A user may plug into the dialog behaviour by listening to events, namely 
+
+```
+dialog2.ajax-start: fired right before an ajax request is started, 
+dialog2.ajax-complete: fired when an ajax request was executed successfully, 
+dialog2.content-update: when the dialogs contents are updated (after ajax-complete)
+```
+
+The preferred way to register handlers on these events is [$().delegate](http://api.jquery.com/delegate/). 
+The code snipped shown below illustrates how this behaviour can be used to implement a *auto-close* ability for a dialog (see issue #19).
+
+```javascript
+
+// If a a.auto-close is contained in the dialogs content, 
+// the dialog will close itself automatically and (optionally)
+// redirect to a new page
+$(document).delegate(".modal", "dialog2.content-update", function() { 
+     // got the dialog as this object. Do something with it!
+     
+    var e = $(this);
+    
+    var autoclose = e.find("a.auto-close");
+    if (autoclose.length > 0) {
+        e.dialog("close");
+        
+        var href = autoclose.attr('href');
+        if (href) {
+            window.location.href = href;
+        }
+    }
+});
+
+```
+
 ## Check out some examples
 
 Go to [the plugins web page](http://nikku.github.com/jquery-bootstrap-scripting/) to check out a number of examples on usage.
