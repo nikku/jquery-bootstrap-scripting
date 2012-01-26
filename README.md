@@ -18,7 +18,7 @@ Contains some nice [jQuery](http://jquery.com) plugins to make working with the 
 
 * [jQuery.form](http://jquery.malsup.com/form/) plugin >= 2.8 for ajax form submit 
 * [jQuery.controls](https://github.com/Nikku/jquery-controls) plugin  >= 0.9 for ajax link binding support
-* [Bootstrap styles](http://twitter.github.com/bootstrap) to look nice
+* [Bootstrap styles](http://twitter.github.com/bootstrap) to look nice (>= 1.3 recommended)
 
 ## Controlling a dialog with JavaScript
 
@@ -40,8 +40,9 @@ The `dialog2()` method accepts an *options object*:
     ...
   }, 
   closeOnOverlayClick: true | false, // Should the dialog be closed on overlay click?
+  closeOnEscape: true | false, // Should the dialog be closed if [ESCAPE] key is pressed?
   removeOnClose: true | false, // Should the dialog be removed from the document when it is closed?
-  showCloseHandle: true | false // Should a close handle be shown?, 
+  showCloseHandle: true | false, // Should a close handle be shown?
   initialLoadText: "" // Text to be displayed when the dialogs contents are loaded
 }
 ```
