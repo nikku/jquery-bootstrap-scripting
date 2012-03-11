@@ -22,8 +22,8 @@ Contains some nice [jQuery](http://jquery.com) plugins to make working with the 
 
 ## Migrating from earlier versions
 * Migration from 1.x:
-** You will need bootstrap 2.x on your page
-** Change your css markup for forms according to the bootstrap 2.0 (buttons always require `.btn`, `.primary` to `.btn-primary`, `.actions` to `.form-actions` and so forth. 
+    * You will need bootstrap 2.x on your page
+    * Change your css markup for forms according to the bootstrap 2.0 (buttons always require `.btn`, `.primary` to `.btn-primary`, `.actions` to `.form-actions` and so forth. 
 
 ## Controlling a dialog with JavaScript
 
