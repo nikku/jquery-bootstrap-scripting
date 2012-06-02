@@ -12,7 +12,7 @@ Contains some nice [jQuery](http://jquery.com) plugins to make working with the 
 * Loading indicator
 * Localization
 * No dependencies to jQuery.UI
-* Control via [`html` markup](#Let the HTML markup decide) possible
+* Control via [`html` markup](#let-the-markup-rule) possible
 
 ## Dependencies
 
