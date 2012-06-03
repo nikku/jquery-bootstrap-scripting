@@ -600,7 +600,7 @@
                         </li>
                         <li>
                             All elements (<code>input[type=submit], input[type=reset], input[type=button], button, .btn</code>)
-                            within a <code>.actions</code> element inside the dialog body are 
+                            within a <code>.form-actions</code> element inside the dialog body are 
                             treated as buttons and <em>override</em> the dialogs current buttons.
                             
                             Buttons added to the dialog will inherit the original buttons class, 
@@ -656,16 +656,16 @@
                         <div id="alert4">
                             <h1>Decision</h1>
                             <p>Decide on an option</p>
-                            <div class="actions">
-                                <a class="btn info" href="#">Info</a>
-                                <a class="btn success" href="#">Success</a>
-                                <button class="danger">Danger</button>
-                                <button class="close-dialog">Close</button>
+                            <div class="form-actions">
+                                <a class="btn btn-info" href="#">Info</a>
+                                <a class="btn btn-success" href="#">Success</a>
+                                <button class="btn btn-danger">Danger</button>
+                                <button class="btn close-dialog">Close</button>
                             </div>
                         </div>
                         <script type="text/javascript">
                             $(function() {
-                                $("#alert4 .actions > *").click(function() {
+                                $("#alert4 .form-actions > *").click(function() {
                                     alert("You chose " + $(this).text());
                                 });
                             });
@@ -680,16 +680,16 @@
     &lt;h1&gt;Decision&lt;/h1&gt;
     &lt;p&gt;Decide on an option&lt;/p&gt;
     &lt;div class=&quot;form-actions&quot;&gt;
-        &lt;a class=&quot;btn info&quot; href=&quot;#&quot;&gt;Info&lt;/a&gt;
-        &lt;a class=&quot;btn success&quot; href=&quot;#&quot;&gt;Success&lt;/a&gt;
-        &lt;button class=&quot;danger&quot;&gt;Danger&lt;/button&gt;
-        &lt;button class=&quot;dialog-close&quot;&gt;Close&lt;/button&gt;
+        &lt;a class=&quot;btn btn-info&quot; href=&quot;#&quot;&gt;Info&lt;/a&gt;
+        &lt;a class=&quot;btn btn-success&quot; href=&quot;#&quot;&gt;Success&lt;/a&gt;
+        &lt;button class=&quot;btn btn-danger&quot;&gt;Danger&lt;/button&gt;
+        &lt;button class=&quot;btn dialog-close&quot;&gt;Close&lt;/button&gt;
     &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;script type=&quot;text/javascript&quot;&gt;
     $(function() {
-        $(&quot;#alert4 .actions &gt; *&quot;).click(function() {
+        $(&quot;#alert4 .form-actions &gt; *&quot;).click(function() {
             alert(&quot;You chose &quot; + $(this).text());
         });
     });
