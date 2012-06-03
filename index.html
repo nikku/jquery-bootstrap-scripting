@@ -1,25 +1,103 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>bootstrap scripting; some nice scripts to for building jquery/bootstrap web applications</title>
+        <title>jquery bootstrap scripting; some nice scripts to for building jquery/bootstrap web applications</title>
 
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-        <script type="text/javascript" src="script/jquery.controls.js"></script>
-        <script type="text/javascript" src="script/jquery.form.js"></script>
-        <script type="text/javascript" src="script/jquery.dialog2.js"></script>
-        <script type="text/javascript" src="script/jquery.dialog2.helpers.js"></script>
-        <script type="text/javascript" src="script/prettify.js"></script>
+        <script type="text/javascript" src="js/jquery.1.6.2.min.js"></script>
+        <script type="text/javascript" src="js/jquery.controls.js"></script>
+        <script type="text/javascript" src="js/jquery.form.js"></script>
+        <script type="text/javascript" src="js/jquery.dialog2.js"></script>
+        <script type="text/javascript" src="js/jquery.dialog2.helpers.js"></script>
+        <script type="text/javascript" src="js/prettify.js"></script>
         
         <style type="text/css">
             @import url('css/bootstrap.css');
             @import url('css/prettify.css');
             @import url('css/jquery-dialog2/jquery.dialog2.css');
             
-            #logo {
-                background: no-repeat scroll url('logo.png') 0 0;
-                height: 130px;
-            }
-            
+			header {
+				margin-top: 30px;
+				margin-bottom: 30px;
+			}
+			
+			header h1 {
+				font-size: 54px;
+				line-heigth: 62px;
+			}
+			
+			header p {
+				font-size: 20px;
+				line-height: 27px;
+			}
+			
+			header .subnav {
+				margin-top: 20px;
+			}
+			
+			/* Subnav */
+			.subnav {
+			  width: 100%;
+			  height: 36px;
+			  background-color: #eeeeee; /* Old browsers */
+			  background-repeat: repeat-x; /* Repeat the gradient */
+			  background-image: -moz-linear-gradient(top, #f5f5f5 0%, #eeeeee 100%); /* FF3.6+ */
+			  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f5f5f5), color-stop(100%,#eeeeee)); /* Chrome,Safari4+ */
+			  background-image: -webkit-linear-gradient(top, #f5f5f5 0%,#eeeeee 100%); /* Chrome 10+,Safari 5.1+ */
+			  background-image: -ms-linear-gradient(top, #f5f5f5 0%,#eeeeee 100%); /* IE10+ */
+			  background-image: -o-linear-gradient(top, #f5f5f5 0%,#eeeeee 100%); /* Opera 11.10+ */
+			  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f5f5', endColorstr='#eeeeee',GradientType=0 ); /* IE6-9 */
+			  background-image: linear-gradient(top, #f5f5f5 0%,#eeeeee 100%); /* W3C */
+			  border: 1px solid #e5e5e5;
+			  -webkit-border-radius: 4px;
+				 -moz-border-radius: 4px;
+					  border-radius: 4px;
+			}
+			.subnav .nav {
+			  margin-bottom: 0;
+			}
+			.subnav .nav > li > a {
+			  margin: 0;
+			  padding-top:    11px;
+			  padding-bottom: 11px;
+			  border-left: 1px solid #f5f5f5;
+			  border-right: 1px solid #e5e5e5;
+			  -webkit-border-radius: 0;
+				 -moz-border-radius: 0;
+					  border-radius: 0;
+			}
+			.subnav .nav > .active > a,
+			.subnav .nav > .active > a:hover {
+			  padding-left: 13px;
+			  color: #777;
+			  background-color: #e9e9e9;
+			  border-right-color: #ddd;
+			  border-left: 0;
+			  -webkit-box-shadow: inset 0 3px 5px rgba(0,0,0,.05);
+				 -moz-box-shadow: inset 0 3px 5px rgba(0,0,0,.05);
+					  box-shadow: inset 0 3px 5px rgba(0,0,0,.05);
+			}
+			.subnav .nav > .active > a .caret,
+			.subnav .nav > .active > a:hover .caret {
+			  border-top-color: #777;
+			}
+			.subnav .nav > li:first-child > a,
+			.subnav .nav > li:first-child > a:hover {
+			  border-left: 0;
+			  padding-left: 12px;
+			  -webkit-border-radius: 4px 0 0 4px;
+				 -moz-border-radius: 4px 0 0 4px;
+					  border-radius: 4px 0 0 4px;
+			}
+			.subnav .nav > li:last-child > a {
+			  border-right: 0;
+			}
+			.subnav .dropdown-menu {
+			  -webkit-border-radius: 0 0 4px 4px;
+				 -moz-border-radius: 0 0 4px 4px;
+					  border-radius: 0 0 4px 4px;
+			}
+
+			
             .source {
                 display: none;
             }
@@ -82,40 +160,47 @@
         </a>
         
         <div class="container">
-            <div class="row">
-                <div class="span16 columns">
-                    <div id="logo"></div>
-                    <ul class="tabs">
+			<header>
+				<h1>Dialog 2 and friends <small>for JQuery/Bootstrap</small></h1>
+				<p>
+					Some nice scripts to for building <a href="http://jquery.com">jQuery</a> 
+					and <a href="http://twitter.github.com/bootstrap">bootstrap</a> based web applications.
+				</p>
+				
+				<div class="subnav">
+					<ul class="nav nav-pills">
                         <li class="active">
-                            <a href="#">samples</a>
+                            <a href="#">Dialog 2</a>
                         </li>
                         <li style="float: right">
-                            <a href="https://github.com/Nikku/jquery-bootstrap-scripting/tree/1.2-wip">documentation</a>
+                            <a href="https://github.com/Nikku/jquery-bootstrap-scripting/">Documentation</a>
                         </li>
                         <li style="float: right">
-                            <a href="https://github.com/Nikku/jquery-bootstrap-scripting/archives/1.2-wip">download</a>
+                            <a href="https://github.com/Nikku/jquery-bootstrap-scripting/zipball/master">Download</a>
                         </li>
                     </ul>
-                    <div>
-                        <p>
-                            This site contains some nice scripts to for building 
-                            <a href="http://jquery.com">jQuery</a> and <a href="http://twitter.github.com/bootstrap">bootstrap</a> 
-                            based web applications. 
-                            
-                            It features some jquery plugins for <a href="#modal">modal dialogs</a>. 
-                        </p>
-                    </div>
-                </div>
-            </div>
+				</div>
+			</header>
+			
             <div class="row">
-                <div class="span16 columns">
-                    <h1>The modal dialog plugin <code>jquery.dialog2.js</code></h1>
+                <div class="span16 columns">					
+					<div class="page-header">
+						<h1>The modal dialog plugin <small>jquery.dialog2.js</small></h1>
+					</div>
+					
                     <p>
                         A jQuery modal dialog plugin based on the bootstrap CSS blue print.
                         Has some nice features such as ajax forms / links, 
                         page load indicators and other nice gimmics. Can create in-page modal boxes too, but is 
                         basically made for navigation within chains of dialog windows.
                     </p>
+					
+					<div class="alert alert-block">
+					  <strong>Compatibility Note</strong>
+					  This version of the plugin requires bootstrap >= 2.0. 
+					  If you still want to use bootstrap 1.x check out <a href="https://github.com/Nikku/jquery-bootstrap-scripting/tree/1.2">the old version</a> of the plugin.
+					</div>
+					
                     <div class="sample">
                         <h3>A simple in page alert</h3>
                         <p>
@@ -136,9 +221,9 @@
                                 You can close this alert if you agree. 
                                 (Note: Normally a dialog box is not that penetrating)
                             </p>
-                            <div class="actions">
-                                <button class="primary close-dialog">Understood</button>
-                                <button class="danger" onclick="alert('You might reconsider your click behaviour!')">I don't care</button>
+                            <div class="form-actions">
+                                <button class="btn-primary close-dialog">Understood</button>
+                                <button class="btn-danger" onclick="alert('You might reconsider your click behaviour!')">I don't care</button>
                             </div>
                         </div>
                         <div class="source">
@@ -173,9 +258,9 @@
         You can close this alert if you agree. 
         (Note: Normally a dialog box is not that penetrating)
     &lt;/p&gt;
-    &lt;div class=&quot;actions&quot;&gt;
-        &lt;button class=&quot;primary close-dialog&quot;&gt;Understood&lt;/button&gt;
-        &lt;button class=&quot;danger&quot; onclick=&quot;alert('You might reconsider your click behaviour!')&quot;&gt;I don't care&lt;/button&gt;
+    &lt;div class=&quot;form-actions&quot;&gt;
+        &lt;button class=&quot;btn-primary close-dialog&quot;&gt;Understood&lt;/button&gt;
+        &lt;button class=&quot;btn-danger&quot; onclick=&quot;alert('You might reconsider your click behaviour!')&quot;&gt;I don't care&lt;/button&gt;
     &lt;/div&gt;
 &lt;/div&gt;</pre>
                         </div>
@@ -192,7 +277,7 @@
                         </p>
                         <div class="activity">
                             <p>
-                                Check out <a class="open-dialog" rel="sample2-dialog" href="dialog1.html">running example</a>.
+                                Check out <a class="open-dialog" rel="sample2-dialog" href="pages/dialog1.html">running example</a>.
                                 <a class="show-source-link" href="#">(View source)</a>
                             </p>
                         </div>
@@ -200,7 +285,7 @@
                             <h5>Source</h5>
                             <p>Embedding the dialog in the (see <a href="#automatic-links">automatic links</a>)</p>
                             <pre class="prettyprint lang-html">
-&lt;a class=&quot;open-dialog&quot; rel=&quot;sample2-dialog&quot; href=&quot;dialog1.html&quot;&gt;running example&lt;/a&gt;</pre>
+&lt;a class=&quot;open-dialog&quot; rel=&quot;sample2-dialog&quot; href=&quot;pages/dialog1.html&quot;&gt;running example&lt;/a&gt;</pre>
                             
                             <p>Contents of first dialog page</p>
                             <pre class="prettyprint lang-html">
@@ -213,9 +298,9 @@
         &lt;h1&gt;My Dialog&lt;/h1&gt;
         &lt;p&gt;
             This is some fine body.
-            &lt;a class=&quot;ajax&quot; href=&quot;./dialog2.html&quot;&gt;Click this link&lt;/a&gt; (will stay in dialog).
+            &lt;a class=&quot;ajax&quot; href=&quot;pages/dialog2.html&quot;&gt;Click this link&lt;/a&gt; (will stay in dialog).
         &lt;/p&gt;
-        &lt;div class=&quot;actions&quot;&gt;
+        &lt;div class=&quot;form-actions&quot;&gt;
             &lt;a class=&quot;btn close-dialog&quot; href=&quot;#&quot;&gt;Cancel&lt;/a&gt;
         &lt;/div&gt;
     &lt;/body&gt;
@@ -233,7 +318,7 @@
         &lt;p&gt;
             Thanks for clicking the previous link. May you tell me your name?
         &lt;/p&gt;
-        &lt;form class=&quot;ajax&quot; method=&quot;get&quot; action=&quot;finish.html&quot;&gt;
+        &lt;form class=&quot;ajax&quot; method=&quot;get&quot; action=&quot;pages/finish.html&quot;&gt;
             &lt;fieldset&gt;
                 &lt;div class=&quot;clearfix&quot;&gt;
                     &lt;label for=&quot;name&quot;&gt;Your name&lt;/label&gt;
@@ -242,8 +327,8 @@
                     &lt;/div&gt;
                 &lt;/div&gt;
             &lt;/fieldset&gt;
-            &lt;div class=&quot;actions&quot;&gt;
-                &lt;input type=&quot;submit&quot; value=&quot;Send&quot; class=&quot;btn primary&quot; /&gt;
+            &lt;div class=&quot;form-actions&quot;&gt;
+                &lt;input type=&quot;submit&quot; value=&quot;Send&quot; class=&quot;btn btn-primary&quot; /&gt;
                 &lt;a class=&quot;btn close-dialog&quot; href=&quot;#&quot;&gt;Cancel&lt;/a&gt;
             &lt;/div&gt;
         &lt;/form&gt;
@@ -307,7 +392,7 @@
                                     $('<div/>').dialog2({
                                         title: "Server notice", 
                                         initialLoadText: "Loading contents...",
-                                        content: "./notice.html", 
+                                        content: "pages/notice.html", 
                                         id: "server-notice"
                                     });
 
@@ -324,7 +409,7 @@
         $(&quot;#show-server-notice-link&quot;).click(function(event) {
             $('&lt;div/&gt;').dialog2({
                 title: &quot;Server notice&quot;, 
-                content: &quot;./notice.html&quot;, 
+                content: &quot;pages/notice.html&quot;, 
                 id: &quot;server-notice&quot;
             });
 
@@ -515,7 +600,7 @@
                         </li>
                         <li>
                             All elements (<code>input[type=submit], input[type=reset], input[type=button], button, .btn</code>)
-                            within a <code>.actions</code> element inside the dialog body are 
+                            within a <code>.form-actions</code> element inside the dialog body are 
                             treated as buttons and <em>override</em> the dialogs current buttons.
                             
                             Buttons added to the dialog will inherit the original buttons class, 
@@ -534,9 +619,9 @@
                         <div id="alert3">
                             <h1>This is a special alert</h1>
                             <p>Submit this dialog to go to heaven!</p>
-                            <form class="ajax" method="get" action="heaven.html">
+                            <form class="ajax" method="get" action="pages/heaven.html">
                                 <input type="hidden" name="nothing" value="to-see" />
-                                <div class="actions">
+                                <div class="form-actions">
                                     <input type="submit" class="primary" />
                                     <a class="btn close-dialog" href="#">Close</a>
                                 </div>
@@ -549,9 +634,9 @@
 &lt;div id=&quot;alert3&quot;&gt;
     &lt;h1&gt;This is a special alert&lt;/h1&gt;
     &lt;p&gt;Submit this dialog to go to heaven!&lt;/p&gt;
-    &lt;form class=&quot;ajax&quot; method=&quot;get&quot; action=&quot;heaven.html&quot;&gt;
+    &lt;form class=&quot;ajax&quot; method=&quot;get&quot; action=&quot;pages/heaven.html&quot;&gt;
         &lt;input type=&quot;hidden&quot; name=&quot;nothing&quot; value=&quot;to-see&quot; /&gt;
-        &lt;div class=&quot;actions&quot;&gt;
+        &lt;div class=&quot;form-actions&quot;&gt;
             &lt;input type=&quot;submit&quot; class=&quot;primary&quot; /&gt;
             &lt;a class=&quot;btn close-dialog&quot; href=&quot;#&quot;&gt;Close&lt;/a&gt;
         &lt;/div&gt;
@@ -571,16 +656,16 @@
                         <div id="alert4">
                             <h1>Decision</h1>
                             <p>Decide on an option</p>
-                            <div class="actions">
-                                <a class="btn info" href="#">Info</a>
-                                <a class="btn success" href="#">Success</a>
-                                <button class="danger">Danger</button>
-                                <button class="close-dialog">Close</button>
+                            <div class="form-actions">
+                                <a class="btn btn-info" href="#">Info</a>
+                                <a class="btn btn-success" href="#">Success</a>
+                                <button class="btn btn-danger">Danger</button>
+                                <button class="btn close-dialog">Close</button>
                             </div>
                         </div>
                         <script type="text/javascript">
                             $(function() {
-                                $("#alert4 .actions > *").click(function() {
+                                $("#alert4 .form-actions > *").click(function() {
                                     alert("You chose " + $(this).text());
                                 });
                             });
@@ -594,17 +679,17 @@
 &lt;div id=&quot;alert4&quot;&gt;
     &lt;h1&gt;Decision&lt;/h1&gt;
     &lt;p&gt;Decide on an option&lt;/p&gt;
-    &lt;div class=&quot;actions&quot;&gt;
-        &lt;a class=&quot;btn info&quot; href=&quot;#&quot;&gt;Info&lt;/a&gt;
-        &lt;a class=&quot;btn success&quot; href=&quot;#&quot;&gt;Success&lt;/a&gt;
-        &lt;button class=&quot;danger&quot;&gt;Danger&lt;/button&gt;
-        &lt;button class=&quot;dialog-close&quot;&gt;Close&lt;/button&gt;
+    &lt;div class=&quot;form-actions&quot;&gt;
+        &lt;a class=&quot;btn btn-info&quot; href=&quot;#&quot;&gt;Info&lt;/a&gt;
+        &lt;a class=&quot;btn btn-success&quot; href=&quot;#&quot;&gt;Success&lt;/a&gt;
+        &lt;button class=&quot;btn btn-danger&quot;&gt;Danger&lt;/button&gt;
+        &lt;button class=&quot;btn dialog-close&quot;&gt;Close&lt;/button&gt;
     &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;script type=&quot;text/javascript&quot;&gt;
     $(function() {
-        $(&quot;#alert4 .actions &gt; *&quot;).click(function() {
+        $(&quot;#alert4 .form-actions &gt; *&quot;).click(function() {
             alert(&quot;You chose &quot; + $(this).text());
         });
     });
@@ -695,7 +780,7 @@
                     </div>
                     <h2>Clarification needed?</h2>
                     <p>
-                        Check out the <a href="https://github.com/Nikku/jquery-bootstrap-scripting/tree/1.2-wip#readme">plugin documentation</a>. 
+                        Check out the <a href="https://github.com/Nikku/jquery-bootstrap-scripting/#readme">plugin documentation</a>. 
                     </p>
                 </div>
             </div>

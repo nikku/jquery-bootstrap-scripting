@@ -7,14 +7,14 @@
  * Licensed under the MIT license 
  * http://www.opensource.org/licenses/mit-license.php 
  * 
- * @version: 1.2.0 (15/09/2011)
+ * @version: 2.0.0 (22/03/2012)
  * 
  * @requires jQuery >= 1.4 
  * 
  * @requires jQuery.form plugin (http://jquery.malsup.com/form/) >= 2.8 for ajax form submit 
  * @requires jQuery.controls plugin (https://github.com/Nikku/jquery-controls) >= 0.9 for ajax link binding support
  * 
- * @requires bootstrap styles (twitter.github.com/bootstrap) to look nice
+ * @requires bootstrap styles (twitter.github.com/bootstrap) in version 2.x to look nice
  * 
  * @author nico.rehwaldt
  */
@@ -24,9 +24,9 @@
      * Dialog html markup
      */
     var __DIALOG_HTML = "<div class='modal'>" + 
-        "<div class='modal-header'>" +
-        "<h3></h3><span class='loader'></span>" + 
+        "<div class='modal-header loading'>" +
         "<a href='#' class='close'></a>" + 
+        "<span class='loader'></span><h3></h3>" + 
         "</div>" + 
         "<div class='modal-body'>" + 
         "</div>" + 
@@ -45,6 +45,7 @@
         
         this.__ajaxCompleteTrigger = $.proxy(function() {
             this.trigger("dialog2.ajax-complete");
+            this.trigger("dialog2.content-update");
         }, handle);
         
         this.__ajaxStartTrigger = $.proxy(function() {
@@ -54,7 +55,7 @@
         this.__removeDialog = $.proxy(this.__remove, this);
         
         handle.bind("dialog2.ajax-start", function() {
-            dialog.options({ buttons: options.autoAddCancelButton ? localizedCancelButton() : {}});
+            dialog.options({buttons: options.autoAddCancelButton ? localizedCancelButton() : {}});
             handle.parent().addClass("loading");
         });
         
@@ -66,7 +67,6 @@
         
         handle.bind("dialog2.ajax-complete", function() {
             handle.parent().removeClass("loading");
-            handle.trigger("dialog2.content-update");
         });
         
         // Apply options to make title and stuff shine
@@ -107,7 +107,7 @@
             if (!selection.is(".modal-body")) {
                 var overlay = $('<div class="modal-backdrop"></div>').hide();
                 var parentHtml = $(__DIALOG_HTML);
-
+                
                 if (options.modalClass) {
                     parentHtml.addClass(options.modalClass);
                     delete options.modalClass;
@@ -152,6 +152,13 @@
             
             this.__handle = handle;
             this.__overlay = handle.parent().prev(".modal-backdrop");
+            
+            this.__addFocusCatchers(parentHtml);
+        }, 
+        
+        __addFocusCatchers: function(parentHandle) {
+            parentHandle.prepend(new FocusCatcher(this.__handle, true));
+            parentHandle.append(new FocusCatcher(this.__handle, false));
         }, 
         
         /**
@@ -167,8 +174,8 @@
             var options = {};
 
             // Add buttons to dialog for all buttons found within 
-            // a .actions area inside the dialog
-            var actions = $(".actions", e).hide();
+            // a .form-actions area inside the dialog
+            var actions = $(".form-actions", e).hide();
             var buttons = actions.find("input[type=submit], input[type=button], input[type=reset], button, .btn");
 
             if (buttons.length) {
@@ -179,7 +186,7 @@
                     var name = button.is("input") ? button.val() || button.attr("type") : button.text();
 
                     options.buttons[name] = {
-                        primary: button.is("input[type=submit] .primary"),
+                        primary: button.is("input[type=submit] .btn-primary"),
                         type: button.attr("class"), 
                         click: function(event) {
                             // simulate click on the original button
@@ -243,31 +250,47 @@
          */
         __remove: function() {
             this.__overlay.remove();
-            this.__handle.remove().removeData("dialog2");
+            this.__handle.removeData("dialog2").parent().remove();
+        }, 
+        
+        /**
+         * Focuses the dialog which will essentially focus the first
+         * focusable element in it (e.g. a link or a button on the button bar).
+         * 
+         * @param backwards whether to focus backwards or not
+         */
+        __focus: function(backwards) {
+            var dialog = this.__handle;
+            
+            // Focus first focusable element in dialog
+            var focusable = dialog
+                              .find("a, input:not(*[type=hidden]), .btn, select, textarea, button")
+                              .filter(function() {
+                                  return $(this).parents(".form-actions").length == 0;
+                              }).eq(0);
+            
+            // may be a button, too
+            var focusableButtons = dialog
+                                      .parent()
+                                      .find(".modal-footer")
+                                      .find("input[type=submit], input[type=button], .btn, button");
+            
+            var focusableElements = focusable.add(focusableButtons);
+            var focusedElement = focusableElements[backwards ? "last" : "first"]();
+            
+            // Focus the element
+            focusedElement.focus();
+            
+            dialog.trigger("dialog2.focussed", [focusedElement.get(0)]);
+            return this;
         }, 
         
         /**
          * Focuses the dialog which will essentially focus the first
          * focusable element in it (e.g. a link or a button on the button bar).
          */
-        __focus: function() {
-            var dialog = this.__handle;
-            
-            // Focus first focusable element in dialog
-            var focusable = dialog.find("a, input:not(*[type=hidden]), .btn, select, textarea, button")
-                                  .filter(function() {
-                                      return $(this).parents(".actions").length == 0;
-                                  }).eq(0);
-                                  
-            // Which might be a button, too
-            if (!focusable.length) {
-                focusable = dialog.parent().find(".modal-footer").find("input[type=submit], input[type=button], .btn, button");
-                if (focusable.length) {
-                    focusable = focusable.eq(0);
-                }
-            }
-
-            focusable.focus();
+        focus: function() {
+            return this.__focus();
         }, 
         
         /**
@@ -329,7 +352,7 @@
 
             // legacy
             if (options.primary) {
-                button.addClass("primary");
+                button.addClass("btn-primary");
             }
 
             if (options.type) {
@@ -462,6 +485,20 @@
     };
     
     /**
+     * Returns a simple DOM node which -- while being invisible to the user -- 
+     * should focus the given argument when the focus is directed to itself. 
+     */
+    function FocusCatcher(dialog, reverse) {
+        return $("<span />")
+            .css({"float": "right", "width": "0px"})
+            .attr("tabindex", 0)
+            .focus(function(event) {
+                  $(dialog).dialog2("__focus", reverse);
+                  event.preventDefault();
+            });
+    };
+    
+    /**
      * Plugging the extension into the jQuery API
      */
     $.extend($.fn, {
@@ -515,10 +552,13 @@
         }
     });
     
-    // Support for close key [ESCAPE] press
+    /***********************************************************************
+     * Closing dialog via ESCAPE key
+     ***********************************************************************/
+    
     $(document).ready(function() {
         $(document).keyup(function(event) {
-            if (event.which == 27) {
+            if (event.which == 27) { // ESCAPE key pressed
                 $(this).find(".modal > .opened").each(function() {
                     var dialog = $(this);
                     if (dialog.dialog2("options").closeOnEscape) {
@@ -529,6 +569,37 @@
         });
     });
     
+    
+    /***********************************************************************
+     * Limit TAB integration in open modals via keypress
+     ***********************************************************************/
+
+    $(document).ready(function(event) {
+
+        $(document).keyup(function(event) {
+            if (event.which == 9) { // TAB key pressed
+                // There is actually a dialog opened
+                if ($(".modal .opened").length) {
+                    // Set timeout (to let the browser perform the tabbing operation
+                    // and check the active element)
+                    setTimeout(function() {
+                        var activeElement = document.activeElement;
+                        if (activeElement) {
+                            var activeElementModal = $(activeElement).parents(".modal").find(".modal-body.opened");
+                            // In the active modal dialog! Everything ok
+                            if (activeElementModal.length != 0) {
+                                return;
+                            }
+                        }
+    
+                        // Did not return; have to focus active modal dialog
+                        $(".modal-body.opened").dialog2("focus");
+                    }, 0);
+                }
+            }
+        });
+    });
+
     /**
      * Random helper functions; today: 
      * Returns true if value is a boolean
