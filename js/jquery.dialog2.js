@@ -51,7 +51,19 @@
         this.__ajaxStartTrigger = $.proxy(function() {
             this.trigger("dialog2.ajax-start");
         }, handle);
-         
+        
+		/* 
+		 * Allows us to change the xhr based on our dialog, e.g. 
+		 * attach url parameter or http header to identify it) 
+		 */
+		this.__ajaxBeforeSend = $.proxy(function(xhr, settings) {
+			handle.trigger("dialog2.before-send", [xhr, settings]);
+			
+			if ($.isFunction($.fn.dialog2.defaults.beforeSend)) {
+				$.fn.dialog2.defaults.beforeSend.call(this, xhr, settings);
+			}
+		}, handle);
+		
         this.__removeDialog = $.proxy(this.__remove, this);
         
         handle.bind("dialog2.ajax-start", function() {
@@ -231,14 +243,19 @@
             // Make submitable for an ajax form 
             // if the jquery.form plugin is provided
             if ($.fn.ajaxForm) {
-                $("form.ajax", e).ajaxForm({
+				var options = {
                     target: e,
                     success: dialog.__ajaxCompleteTrigger,
                     beforeSubmit: dialog.__ajaxStartTrigger, 
+					beforeSend: dialog.__ajaxBeforeSend, 
                     error: function() {
                         throw dialogError("Form submit failed: " + $.makeArray(arguments));
                     }
-                }).removeClass("ajax");
+                };
+				
+                $("form.ajax", e)
+					.removeClass("ajax")
+					.ajaxForm(options);
             }
             
             e.trigger("dialog2.after-ajaxify");
@@ -374,6 +391,8 @@
                 .find("a.btn")
                     .filter(function(i, e) {return $(e).text() == name;})
                         .remove();
+			
+			return this;
         }, 
         
         /**
@@ -389,8 +408,12 @@
                 handle.html($("<span></span>").text(loadText));
             }
             
-            handle.trigger("dialog2.ajax-start")
-                  .load(url, this.__ajaxCompleteTrigger);
+			handle
+				.trigger("dialog2.ajax-start");
+			
+			dialogLoad.call(handle, url, this.__ajaxCompleteTrigger, this.__ajaxBeforeSend);
+			
+			return this;
         },
         
         /**
@@ -630,7 +653,8 @@
         removeOnClose: true, 
         showCloseHandle: true, 
         initialLoadText: "", 
-        closeOnEscape: true
+        closeOnEscape: true, 
+		beforeSend: null
     };
     
     /***********************************************************************
@@ -703,6 +727,65 @@
         });
     };
     
+    /***********************************************************************
+     * jQuery load with before send integration
+	 * copied from jQuery.fn.load but with beforeSendCallback support
+     ***********************************************************************/
+    
+	function dialogLoad(url, completeCallback, beforeSendCallback) {
+		// Don't do a request if no elements are being requested
+		if ( !this.length ) {
+			return this;
+		}
+
+		var selector, type, response,
+			self = this,
+			off = url.indexOf(" ");
+
+		if ( off >= 0 ) {
+			selector = url.slice( off, url.length );
+			url = url.slice( 0, off );
+		}
+		
+		// Request the remote document
+		jQuery.ajax({
+			url: url,
+
+			// if "type" variable is undefined, then "GET" method will be used
+			type: type,
+			dataType: "html",
+			beforeSend: beforeSendCallback, 
+			complete: function( jqXHR, status ) {
+				if ( completeCallback ) {
+					self.each( completeCallback, response || [ jqXHR.responseText, status, jqXHR ] );
+				}
+			}
+		}).done(function( responseText ) {
+
+			// Save response for use in complete callback
+			response = arguments;
+
+			// See if a selector was specified
+			self.html( selector ?
+
+				// Create a dummy div to hold the results
+				jQuery("<div>")
+
+					// inject the contents of the document in, removing the scripts
+					// to avoid any 'Permission Denied' errors in IE
+					.append( responseText.replace( rscript, "" ) )
+
+					// Locate the specified elements
+					.find( selector ) :
+
+				// If not, just inject the full result
+				responseText );
+
+		});
+
+		return this;
+	}
+	
     /***********************************************************************
      * Integration with jquery.controls
      ***********************************************************************/
