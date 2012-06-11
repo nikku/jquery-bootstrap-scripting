@@ -4,10 +4,6 @@
      margin: 0 0 0 -280px;
 }
 
-.modal .modal-header h3 {
-    display: inline-block;
-}
-
 .modal.loading .modal-header .loader {
     height: 36px;
     width: 16px;

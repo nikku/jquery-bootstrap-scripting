@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Something you find noticable?</title>
+    </head>
+	<body>
+        <p>
+            All right, no supprising content here.
+            Go ahead and check something else out.
+        </p>
+        <script type="text/javascript">
+            $("#server-notice").dialog2("options", {
+                buttons: {
+                    "Have seen it!": function() {
+                        $(this).dialog2("close");
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>

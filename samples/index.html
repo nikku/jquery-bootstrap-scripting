@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>jquery bootstrap scripting; some nice scripts to for building jquery/bootstrap web applications</title>
+
+        <script type="text/javascript" src="js/jquery.1.6.2.min.js"></script>
+        <script type="text/javascript" src="js/jquery.controls.js"></script>
+        <script type="text/javascript" src="js/jquery.form.js"></script>
+        <script type="text/javascript" src="../lib/jquery.dialog2.js"></script>
+        <script type="text/javascript" src="../lib/jquery.dialog2.helpers.js"></script>
+        <script type="text/javascript" src="js/prettify.js"></script>
+        
+        <style type="text/css">
+            @import url('../css/bootstrap.css');
+            @import url('css/prettify.css');
+            @import url('../css/jquery-dialog2/jquery.dialog2.css');
+            @import url('css/docs.css');
+        </style>
+        
+        <script type="text/javascript">
+            $(document).ready(function() {
+                prettyPrint();
+                
+                $(document).controls();
+                $(".show-source-link").click(function(event) {
+                    event.preventDefault();
+                    
+                    var link = $(this);
+                    var source = link.parents(".activity").nextAll(".source").eq(0);
+                    
+                    source.toggleClass("open");
+                    if (source.is(".open")) {
+                        link.text("(Hide source)");
+                    } else {
+                        link.text("(View source)");
+                    }
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <a href="http://github.com/nikku">
+            <img style="position: absolute; top: 0; right: 0; border: 0;" 
+                 src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" 
+                 alt="Fork me on GitHub">
+        </a>
+        
+        <div class="container">
+			<header>
+				<h1>Dialog 2 and friends <small>for JQuery/Bootstrap</small></h1>
+				<p>
+					Some nice scripts to for building <a href="http://jquery.com">jQuery</a> 
+					and <a href="http://twitter.github.com/bootstrap">bootstrap</a> based web applications.
+				</p>
+				
+				<div class="subnav">
+					<ul class="nav nav-pills">
+                        <li class="active">
+                            <a href="#">Dialog 2</a>
+                        </li>
+                        <li style="float: right">
+                            <a href="https://github.com/Nikku/jquery-bootstrap-scripting/">Documentation</a>
+                        </li>
+                        <li style="float: right">
+                            <a href="https://github.com/Nikku/jquery-bootstrap-scripting/zipball/master">Download</a>
+                        </li>
+                    </ul>
+				</div>
+			</header>
+			
+            <div class="row">
+                <div class="span16 columns">					
+					<div class="page-header">
+						<h1>The modal dialog plugin <small>jquery.dialog2.js</small></h1>
+					</div>
+					
+                    <p>
+                        A jQuery modal dialog plugin based on the bootstrap CSS blue print.
+                        Has some nice features such as ajax forms / links, 
+                        page load indicators and other nice gimmics. Can create in-page modal boxes too, but is 
+                        basically made for navigation within chains of dialog windows.
+                    </p>
+					
+					<div class="alert alert-block">
+					  <strong>Compatibility Note</strong>
+					  This version of the plugin requires bootstrap >= 2.0. 
+					  If you still want to use bootstrap 1.x check out <a href="https://github.com/Nikku/jquery-bootstrap-scripting/tree/1.2">the old version</a> of the plugin.
+					</div>
+					
+                    <div class="sample">
+                        <h3>A simple in page alert</h3>
+                        <p>
+                            Dialogs can be created both <a href="#create-using-javascript">using JavaScript</a>
+                            and via <a href="#create-using-jquery-controls">special links</a> on a page.
+                        </p>
+
+                        <div class="activity">
+                            <p>
+                                Display a <a class="open-dialog" closeOnEscape="false" closeOnOverlayClick="false" showCloseHandle="false" rel="sample1-dialog">simple alert</a>.
+                                <a class="show-source-link" href="#">(View source)</a>
+                            </p>
+                        </div>
+                        <div id="sample1-dialog" style="display: none">
+                            <h1>Simple alert</h1>
+                            <p>
+                                It is always beneficial to acknowledge alerts of any kind.
+                                You can close this alert if you agree. 
+                                (Note: Normally a dialog box is not that penetrating)
+                            </p>
+                            <div class="form-actions">
+                                <button class="btn-primary close-dialog">Understood</button>
+                                <button class="btn-danger" onclick="alert('You might reconsider your click behaviour!')">I don't care</button>
+                            </div>
+                        </div>
+                        <div class="source">
+                            <h5>Source</h5>
+                            <p>Embedding the dialog in the (see <a href="#automatic-links">automatic links</a>)</p>
+                            <pre class="prettyprint lang-html">
+&lt;a class=&quot;open-dialog&quot; closeOnEscape=&quot;false&quot; closeOnOverlayClick=&quot;false&quot; showCloseHandle=&quot;false&quot; rel=&quot;sample1-dialog&quot;&gt;simple alert&lt;/a&gt;
+
+&lt;!-- which is equivalent to the following JavaScript snippet --&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+    $(function() {
+        $(&quot;#sample1-dialog&quot;).dialog2({
+            showCloseHandle: false,
+            removeOnClose: false, 
+            autoOpen: false, 
+            closeOnEscape: false, 
+            closeOnOverlayClick: false
+        });
+
+        $(&quot;.open-dialog&quot;).click(function(event) {
+            event.preventDefault();
+            $(&quot;#sample1-dialog&quot;).dialog2(&quot;open&quot;);
+        });
+    });
+&lt;/script&gt;</pre>
+                            <p>The dialogs contents (read more about it <a href="#let-markup-rule">here</a>)</p>
+                            <pre class="prettyprint lang-html">
+&lt;div id=&quot;sample1-dialog&quot; style=&quot;display: none&quot;&gt;
+    &lt;h1&gt;Simple alert&lt;/h1&gt;
+    &lt;p&gt;
+        It is always beneficial to acknowledge alerts of any kind.
+        You can close this alert if you agree. 
+        (Note: Normally a dialog box is not that penetrating)
+    &lt;/p&gt;
+    &lt;div class=&quot;form-actions&quot;&gt;
+        &lt;button class=&quot;btn-primary close-dialog&quot;&gt;Understood&lt;/button&gt;
+        &lt;button class=&quot;btn-danger&quot; onclick=&quot;alert('You might reconsider your click behaviour!')&quot;&gt;I don't care&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+                        </div>
+                    </div>
+                    <div class="sample">
+                        <h3>Dialog page flow</h3>
+                        <p>
+                            A dialogs content can be loaded via ajax. Inside a dialog, the user can navigate 
+                            via links as well as form submissions.
+                            Additionally navigation can be programmatically controlled via JavaScript.
+                            In most cases however there is barely any JavaScript needed to set up 
+                            page flow within a dialog (see <a href="#let-markup-rule">how html markup 
+                            impacts the dialog</a>).
+                        </p>
+                        <div class="activity">
+                            <p>
+                                Check out <a class="open-dialog" rel="sample2-dialog" href="pages/dialog1.html">running example</a>.
+                                <a class="show-source-link" href="#">(View source)</a>
+                            </p>
+                        </div>
+                        <div class="source">
+                            <h5>Source</h5>
+                            <p>Embedding the dialog in the (see <a href="#automatic-links">automatic links</a>)</p>
+                            <pre class="prettyprint lang-html">
+&lt;a class=&quot;open-dialog&quot; rel=&quot;sample2-dialog&quot; href=&quot;pages/dialog1.html&quot;&gt;running example&lt;/a&gt;</pre>
+                            
+                            <p>Contents of first dialog page</p>
+                            <pre class="prettyprint lang-html">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;jQuery dialog2 plugin&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;h1&gt;My Dialog&lt;/h1&gt;
+        &lt;p&gt;
+            This is some fine body.
+            &lt;a class=&quot;ajax&quot; href=&quot;pages/dialog2.html&quot;&gt;Click this link&lt;/a&gt; (will stay in dialog).
+        &lt;/p&gt;
+        &lt;div class=&quot;form-actions&quot;&gt;
+            &lt;a class=&quot;btn close-dialog&quot; href=&quot;#&quot;&gt;Cancel&lt;/a&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre>
+                            
+                            <p>Contents of second dialog page</p>
+                            <pre class="prettyprint lang-html">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;jQuery dialog2 plugin&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;h1&gt;Thanks :-)&lt;/h1&gt;
+        &lt;p&gt;
+            Thanks for clicking the previous link. May you tell me your name?
+        &lt;/p&gt;
+        &lt;form class=&quot;ajax&quot; method=&quot;get&quot; action=&quot;pages/finish.html&quot;&gt;
+            &lt;fieldset&gt;
+                &lt;div class=&quot;clearfix&quot;&gt;
+                    &lt;label for=&quot;name&quot;&gt;Your name&lt;/label&gt;
+                    &lt;div class=&quot;input&quot;&gt;
+                        &lt;input type=&quot;text&quot; name=&quot;name&quot; id=&quot;name&quot; /&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/fieldset&gt;
+            &lt;div class=&quot;form-actions&quot;&gt;
+                &lt;input type=&quot;submit&quot; value=&quot;Send&quot; class=&quot;btn btn-primary&quot; /&gt;
+                &lt;a class=&quot;btn close-dialog&quot; href=&quot;#&quot;&gt;Cancel&lt;/a&gt;
+            &lt;/div&gt;
+        &lt;/form&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre>
+                            
+                        <p>Contents of final dialog page</p>
+                        <pre class="prettyprint lang-html">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;jQuery dialog2 plugin&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;h1&gt;That's really it&lt;/h1&gt;
+        &lt;p&gt;
+            All right, so much about this short demo.
+        &lt;/p&gt;
+        &lt;script type=&quot;text/javascript&quot;&gt;
+            $(&quot;#sample2-dialog&quot;).dialog2({
+                buttons: {
+                    &quot;Close&quot;: function() {
+                        $(this).dialog2(&quot;close&quot;);
+                    } 
+                }
+            });
+        &lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre>
+                        </div>
+                    </div>
+                    <h2>
+                        Controlling a dialog via JavaScript
+                    </h2>
+                    <p>
+                        The dialog plugin exposes a jquery interface which can be invoked via JavaScript.
+                        The jquery method <code>dialog2</code> is both the constructor for new 
+                        dialogs and the provider of the API.
+                        
+                        The constructor accepts an options argument like <code>$(".selector").dialog2(options)</code>
+                        and the invocation of an API method starts with the method name and the list of method 
+                        arguments like <code>$(".selector").dialog2("removeButton", "Close")</code>.
+                        
+                        See <a href="https://github.com/nikku/jquery-bootstrap-scripting#readme">detailed notes on that</a>.
+                    </p>
+                    <div class="sample">
+                        <h3>Loading server content (programmatic way)</h3>
+                        <p>
+                            It is possible to pass a <code>content</code> attribute to the dialog via its constructor options
+                            to make the dialog display a certain web page.
+                        </p>
+                        <div class="activity">
+                            <p>
+                                Load and <a href="#" id="show-server-notice-link">show me some server content!</a>
+                                <a class="show-source-link" href="#">(View source)</a>
+                            </p>
+                        </div>
+                        <script type="text/javascript">
+                            $(function() {
+                                $("#show-server-notice-link").click(function(event) {
+                                    $('<div/>').dialog2({
+                                        title: "Server notice", 
+                                        initialLoadText: "Loading contents...",
+                                        content: "pages/notice.html", 
+                                        id: "server-notice"
+                                    });
+
+                                    event.preventDefault();
+                                });
+                            });
+                        </script>
+                        <div class="source">
+                            <h5>Source</h5>
+                            <pre class="prettyprint lang-html">
+&lt;a href=&quot;#&quot; id=&quot;show-server-notice-link&quot;&gt;show me some server content!&lt;/a&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+    $(function() {
+        $(&quot;#show-server-notice-link&quot;).click(function(event) {
+            $('&lt;div/&gt;').dialog2({
+                title: &quot;Server notice&quot;, 
+                content: &quot;pages/notice.html&quot;, 
+                id: &quot;server-notice&quot;
+            });
+
+            event.preventDefault();
+        });
+    });
+&lt;/script&gt;</pre>
+                        </div>
+                    </div>
+                    
+                    <div class="sample">
+                        <h3>Creating in page dialogs</h3>
+                        <p>
+                            Dialogs can be created using an existing element as a body or 
+                            by aggregating a number of elements in it.
+                        </p>
+                        <div class="activity">
+                            <p>
+                                <a href="#" onclick="$('#alert').dialog2('open'); return false">Create and open dialog</a> 
+                                from single <code>div</code>. <em>No AJAX is needed here</em> 
+                                <a class="show-source-link" href="#">(View source)</a>
+                            </p>
+                        </div>
+                        <div id="alert">
+                            <p>This is an alert! Just want to inform you about that.</p>
+                        </div>
+                        <script type="text/javascript">
+                            $(function() {
+                                $("#alert").dialog2({
+                                    title: "Alert", 
+                                    autoOpen: false,
+                                    buttons: {
+                                        Close: { 
+                                            primary: true, 
+                                            click: function() {
+                                                $(this).dialog2("close");
+                                            }
+                                        }
+                                    }, 
+                                    removeOnClose: false
+                                });
+                            });
+                        </script>
+                        <div class="source">
+                            <h5>Source</h5>
+                            <pre class="prettyprint lang-html">
+&lt;div id=&quot;alert&quot;&gt;
+    &lt;p&gt;This is an alert! Just want to inform you about that.&lt;/p&gt;
+&lt;/div&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+    $(function() {
+        $(&quot;#alert&quot;).dialog2({
+            title: &quot;Alert&quot;, 
+            autoOpen: false,
+            buttons: {
+                Close: { 
+                    primary: true, 
+                    click: function() {
+                        $(this).dialog2(&quot;close&quot;);
+                    }
+                }
+            }, 
+            removeOnClose: false
+        });
+    });
+&lt;/script&gt;</pre>
+                        </div>
+                        <div class="activity">
+                            <p>
+                                <a href="#" onclick="$('#alert2').dialog2('open'); return false">Open dialog</a> which aggregates a number of elements.
+                                <em>No AJAX is needed here</em>
+                                <a class="show-source-link" href="#">(View source)</a>
+                            </p>
+                        </div>
+                        
+                        <p class="custom-dialog-content">
+                            foo
+                        </p>
+                        <p class="custom-dialog-content">
+                            and
+                        </p>
+                        <p class="custom-dialog-content">
+                            bar
+                        </p>
+                        <p class="custom-dialog-content">
+                            makes
+                        </p>
+                        <p class="custom-dialog-content">
+                            foobar
+                        </p>
+                        <script type="text/javascript">
+                            $(function() {
+                                $(".custom-dialog-content").dialog2({
+                                    title: "Alert", 
+                                    id: "alert2",
+                                    autoOpen: false,
+                                    buttons: {
+                                        Close: { 
+                                            primary: true, 
+                                            click: function() {
+                                                $(this).dialog2("close");
+                                            }
+                                        }
+                                    }, 
+                                    removeOnClose: false
+                                });
+                            });
+                        </script>
+                        <div class="source">
+                        <h5>Source</h5>
+                            <pre class="prettyprint lang-html">
+&lt;p class=&quot;custom-dialog-content&quot;&gt;
+    foo
+&lt;/p&gt;
+&lt;p class=&quot;custom-dialog-content&quot;&gt;
+    and
+&lt;/p&gt;
+&lt;p class=&quot;custom-dialog-content&quot;&gt;
+    bar
+&lt;/p&gt;
+&lt;p class=&quot;custom-dialog-content&quot;&gt;
+    makes
+&lt;/p&gt;
+&lt;p class=&quot;custom-dialog-content&quot;&gt;
+    foobar
+&lt;/p&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+    $(function() {
+        $(&quot;.custom-dialog-content&quot;).dialog2({
+            title: &quot;Alert&quot;, 
+            id: &quot;alert2&quot;,
+            autoOpen: false,
+            buttons: {
+                Close: { 
+                    primary: true, 
+                    click: function() {
+                        $(this).dialog2(&quot;close&quot;);
+                    }
+                }
+            }, 
+            removeOnClose: false
+        });
+    });
+&lt;/script&gt;</pre>
+                        </div>                      
+                    </div>
+                    <h2 id="let-markup-rule">Let the markup rule</h2>
+                    
+                    <h3>Default behaviour</h3>
+                    <p>
+                        Dialog will show load indicator every time an ajax request is done to load
+                        new dialog pages from somewhere. If response body contains a <code>h1</code>
+                        the contents of this heading will be the new dialog title.
+                    </p>
+                    <p>
+                        If response html contains a submitable <code>form.ajax</code> a submit handler 
+                        will be bound the dialog and a submit button will be added to the dialog while
+                        the original submit button (if any) will be hidden. 
+                    </p>
+                    <p>
+                        <code>a.ajax</code> links within the dialog content will trigger loading of a new
+                        dialog page <em>inside</em> the dialog.
+                    </p>
+                    <h3 id="automatic-links">Automatically ajaxifying links on a web page</h3>
+                    <p>
+                        In conjunction with the <code>jquery.controls</code> plugin, the dialog will register
+                        dialog open for all <code>a.open-dialog</code> within a document. The title will be 
+                        via the links <code>title</code> attribute and the id is determined via the links <code>rel</code>
+                        attribute (see previous examples on that).
+                    </p>
+                    
+                    <h3>Dialog customizations based on its content</h3>
+                    <p>
+                        The dialog will change its apperance and behaviour based on its contents: 
+                    </p>
+                    <ul style="margin-left: 50px;">
+                        <li>
+                            The first <code>h1</code> text content is used as the dialogs <code>title</code>.
+                        </li>
+                        <li>
+                            <code>a.ajax</code> elements in the dialogs content
+                            navigate to new pages within the dialog.
+                        </li>
+                        <li>
+                            <code>form.ajax</code> elements are ajax-submitted
+                            and the response is displayed as the new content
+                            of the dialog.
+                        </li>
+                        <li>
+                            All elements (<code>input[type=submit], input[type=reset], input[type=button], button, .btn</code>)
+                            within a <code>.form-actions</code> element inside the dialog body are 
+                            treated as buttons and <em>override</em> the dialogs current buttons.
+                            
+                            Buttons added to the dialog will inherit the original buttons class, 
+                            click behaviour and text (e.g. a button mapping to a 
+                            <code>input[type=submit]</code>
+                            will submit the form the original input was attached to). 
+                        </li>
+                    </ul>
+                    <div class="sample">
+                        <div class="activity">
+                            <p>
+                                <a href="#" rel="alert3" class="open-dialog">Demonstrate that!</a>
+                                <a class="show-source-link" href="#">(View source)</a>
+                            </p>
+                        </div>
+                        <div id="alert3">
+                            <h1>This is a special alert</h1>
+                            <p>Submit this dialog to go to heaven!</p>
+                            <form class="ajax" method="get" action="pages/heaven.html">
+                                <input type="hidden" name="nothing" value="to-see" />
+                                <div class="form-actions">
+                                    <input type="submit" class="primary" />
+                                    <a class="btn close-dialog" href="#">Close</a>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="source">
+                            <h5>Source</h5>
+                            <pre class="prettyprint lang-html">
+&lt;a href=&quot;#&quot; rel=&quot;alert3&quot; class=&quot;open-dialog&quot;&gt;Demonstrate that!&lt;/a&gt;
+&lt;div id=&quot;alert3&quot;&gt;
+    &lt;h1&gt;This is a special alert&lt;/h1&gt;
+    &lt;p&gt;Submit this dialog to go to heaven!&lt;/p&gt;
+    &lt;form class=&quot;ajax&quot; method=&quot;get&quot; action=&quot;pages/heaven.html&quot;&gt;
+        &lt;input type=&quot;hidden&quot; name=&quot;nothing&quot; value=&quot;to-see&quot; /&gt;
+        &lt;div class=&quot;form-actions&quot;&gt;
+            &lt;input type=&quot;submit&quot; class=&quot;primary&quot; /&gt;
+            &lt;a class=&quot;btn close-dialog&quot; href=&quot;#&quot;&gt;Close&lt;/a&gt;
+        &lt;/div&gt;
+    &lt;/form&gt;
+&lt;/div&gt;</pre>
+                        </div>
+                        
+                        <div class="activity">
+                            <p>
+                                Or let me at least 
+                                <a href="#" rel="alert4" class="open-dialog">
+                                    decide on my favourite button color!
+                                </a>
+                                <a class="show-source-link" href="#">(View source)</a>
+                            </p>
+                        </div>
+                        <div id="alert4">
+                            <h1>Decision</h1>
+                            <p>Decide on an option</p>
+                            <div class="form-actions">
+                                <a class="btn btn-info" href="#">Info</a>
+                                <a class="btn btn-success" href="#">Success</a>
+                                <button class="btn btn-danger">Danger</button>
+                                <button class="btn close-dialog">Close</button>
+                            </div>
+                        </div>
+                        <script type="text/javascript">
+                            $(function() {
+                                $("#alert4 .form-actions > *").click(function() {
+                                    alert("You chose " + $(this).text());
+                                });
+                            });
+                        </script>
+                        <div class="source">
+                            <h5>Source</h5>
+                            <!-- https://gist.github.com/1201643 -->
+                            <pre class="prettyprint lang-html">
+&lt;a href=&quot;#&quot; rel=&quot;alert4&quot; class=&quot;open-dialog&quot;&gt;decide on my favourite button color!&lt;/a&gt;
+
+&lt;div id=&quot;alert4&quot;&gt;
+    &lt;h1&gt;Decision&lt;/h1&gt;
+    &lt;p&gt;Decide on an option&lt;/p&gt;
+    &lt;div class=&quot;form-actions&quot;&gt;
+        &lt;a class=&quot;btn btn-info&quot; href=&quot;#&quot;&gt;Info&lt;/a&gt;
+        &lt;a class=&quot;btn btn-success&quot; href=&quot;#&quot;&gt;Success&lt;/a&gt;
+        &lt;button class=&quot;btn btn-danger&quot;&gt;Danger&lt;/button&gt;
+        &lt;button class=&quot;btn dialog-close&quot;&gt;Close&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+    $(function() {
+        $(&quot;#alert4 .form-actions &gt; *&quot;).click(function() {
+            alert(&quot;You chose &quot; + $(this).text());
+        });
+    });
+&lt;/script&gt;</pre>
+                        </div>
+                    </div>
+                    <h2>Using <code>alert</code>, <code>confirm</code> and <code>prompt</code> helpers</h2>
+                    <p>
+                        The script file <code>jquery.dialog2.helpers.js</code> provides unobstrusive 
+                        counterparts to the window functions <code>alert</code>, <code>confirm</code> and <code>prompt</code>. 
+                        They are available as function in the namespace <code>$.fn.dialog2.helpers.*</code>. 
+                    </p>
+                    <div class="activity">
+                        <p>
+                            Check out 
+                            <a href="#" id="show-alert">alert</a>, 
+                            <a href="#" id="show-confirm">confirm</a>, 
+                            <a href="#" id="show-prompt">prompt</a>
+                            
+                            <a class="show-source-link" href="#">(View source)</a>
+                        </p>
+                    </div>
+                    <script type="text/javascript">
+                        $("#show-alert").click(function(event) {
+                            $.fn.dialog2.helpers.alert("This dialog is non intrusive", { 
+                                close: function() {
+                                    alert("This one is!");
+                                }
+                            });
+
+                            event.preventDefault();
+                        });
+                        
+                        $("#show-prompt").click(function() {
+                            $.fn.dialog2.helpers.prompt("What is your age?", {
+                                ok: function(event, value) { alert("Your age is: " + value); }, 
+                                cancel: function() { alert("Better tell me!"); }
+                            });
+
+                            event.preventDefault();
+                        });
+                        
+                        $("#show-confirm").click(function() {
+                            $.fn.dialog2.helpers.confirm("Is this dialog non intrusive?", {
+                                confirm: function() { alert("You said yes? Well... no"); }, 
+                                decline: function() { alert("You said no? Right choice!") }
+                            });
+
+                            event.preventDefault();
+                        });
+                    </script>
+                    <div class="source">
+                        <h5>Source</h5>
+                        <pre class="prettyprint lang-html">
+&lt;a href=&quot;#&quot; id=&quot;show-alert&quot;&gt;alert&lt;/a&gt;, 
+&lt;a href=&quot;#&quot; id=&quot;show-confirm&quot;&gt;confirm&lt;/a&gt;, 
+&lt;a href=&quot;#&quot; id=&quot;show-prompt&quot;&gt;prompt&lt;/a&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+    $(&quot;#show-alert&quot;).click(function(event) {
+        $.fn.dialog2.helpers.alert(&quot;This dialog is non intrusive&quot;, { 
+            close: function() {
+                alert(&quot;This one is!&quot;);
+            }
+        });
+
+        event.preventDefault();
+    });
+
+    $(&quot;#show-prompt&quot;).click(function() {
+        $.fn.dialog2.helpers.prompt(&quot;What is your age?&quot;, {
+            ok: function(event, value) { alert(&quot;Your age is: &quot; + value); }, 
+            cancel: function() { alert(&quot;Better tell me!&quot;); }
+        });
+
+        event.preventDefault();
+    });
+
+    $(&quot;#show-confirm&quot;).click(function() {
+        $.fn.dialog2.helpers.confirm(&quot;Is this dialog non intrusive?&quot;, {
+            confirm: function() { alert(&quot;You said yes? Well... no&quot;); }, 
+            decline: function() { alert(&quot;You said no? Right choice!&quot;) }
+        });
+
+        event.preventDefault();
+    });
+&lt;/script&gt;
+                        </pre>
+                    </div>
+					<h2>Hook into the behaviour of the dialog using events</h2>
+					<p>
+						One can hook into the dialog by listening to events prefixed with <code>dialog2.</code>. 
+					</p>
+					
+					<div class="activity">
+						<p>
+							Open <a href="#" id="show-server-notice-verbose-link">a dialog</a> logging fired events.<br/>
+							<a href="#" id="show-logged-events-link">Show</a> the logged events.
+							<!--a class="show-source-link" href="#">(View source)</a-->
+						</p>
+					</div>
+					
+					<p>
+						The events observed during the life cycle of a dialog are sumarized in the table below: 
+					</p>
+					
+					<table class="table table-bordered">
+						<thead>
+							<tr><th>event name</th><th>semantics</th></tr>
+						</thead>
+						<tbody>
+							<tr><td style="width: 220px"><code>dialog2.before-open</code></td><td>the dialog is about to open</td><tr>
+							<tr><td><code>dialog2.opened</code></td><td>the dialog was opened</td><tr>
+							<tr><td><code>dialog2.focussed</code></td><td>the dialog gains focus</td><tr>
+							<tr><td><code>dialog2.ajax-start</code></td><td>an ajax update is about to start</td><tr>
+							<tr><td><code>dialog2.before-send</code></td><td>the xhr request is about to be sent inside the dialog (on form submit or content load). <code>jqXhr, settings</code> is passed as additional arguments</td><tr>
+							<tr><td colspan="2">Updating the contents with the dialogs initial html</td></tr>
+							<tr><td><code>dialog2.content-update</code></td><td>update content</td><tr>
+							<tr><td><code>dialog2.before-ajaxify</code></td><td>before applying ajax controls to content</td><tr>
+							<tr><td><code>dialog2.after-ajaxify</code></td><td>after applying ajax controls to content</td><tr>
+							<tr><td><code>dialog2.before-update-markup</code></td><td>before updating the dialog markup from content HTML (e.g. update button bar)</td><tr>
+							<tr><td><code>dialog2.after-update-markup</code></td><td>after updating the dialog markup</td><tr>
+							<tr><td><code>dialog2.focussed</code></td><td>the dialog gains focus once more (selects first focusable element)</td><tr>
+							<tr><td><code>dialog2.ajax-complete</code></td><td>ajax operation is complete</td><tr>
+							<tr><td colspan="2">Updating the contents with the response received from the server (events have same semantics as explained above)</td><tr>
+							<tr><td><code>dialog2.content-update</code></td><td></td><tr>
+							<tr><td><code>dialog2.before-ajaxify</code></td><td></td><tr>
+							<tr><td><code>dialog2.after-ajaxify</code></td><td></td><tr>
+							<tr><td><code>dialog2.before-update-markup</code></td><td></td><tr>
+							<tr><td><code>dialog2.after-update-markup</code></td><td></td><tr>
+							<tr><td><code>dialog2.focussed</code></td><td></td><tr>
+							<tr><td><code>dialog2.closed</code></td><td>the dialog is closed</td><tr>
+						</tbody>
+					</table>
+					
+					<script type="text/javascript">
+						$(function() {
+							var eventLog = [];
+							
+							$("#show-logged-events-link").click(function(event) {
+								event.preventDefault();
+								
+								if (console && console.log) {
+									console.log(eventLog);
+								}
+								alert("Logged events: \n" + eventLog);
+							});
+							
+							$("#show-server-notice-verbose-link").click(function(event) {
+								var dialog = $('<div/>');
+								
+								var events = [ 
+									"dialog2.ajax-start", 
+									"dialog2.before-send", 
+									"dialog2.ajax-complete", 
+									"dialog2.content-update", 
+									"dialog2.before-update-markup", 
+									"dialog2.after-update-markup", 
+									"dialog2.before-ajaxify", 
+									"dialog2.after-ajaxify", 
+									"dialog2.focussed", 
+									"dialog2.closed", 
+									"dialog2.before-open", 
+									"dialog2.opened" ];
+								
+								$.each(events, function(i, e) {
+									dialog.bind(e, function(event) {
+										eventLog.push(e);
+									});
+								});
+								
+								dialog.dialog2({
+									title: "Server notice", 
+									initialLoadText: "Loading contents...",
+									content: "pages/notice.html", 
+									id: "server-notice"
+								});
+								
+								event.preventDefault();
+							});
+						});
+					</script>
+					
+                    <h2>Clarification needed?</h2>
+                    <p>
+                        Check out the <a href="https://github.com/Nikku/jquery-bootstrap-scripting/#readme">plugin documentation</a>. 
+                    </p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

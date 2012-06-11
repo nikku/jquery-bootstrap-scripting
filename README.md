@@ -12,13 +12,18 @@ Contains some nice [jQuery](http://jquery.com) plugins to make working with the 
 * Loading indicator
 * Localization
 * No dependencies to jQuery.UI
-* Control via [`html` markup](#Let the HTML markup decide) possible
+* Control via [`html` markup](#let-the-markup-rule) possible
 
 ## Dependencies
 
 * [jQuery.form](http://jquery.malsup.com/form/) plugin >= 2.8 for ajax form submit 
 * [jQuery.controls](https://github.com/Nikku/jquery-controls) plugin  >= 0.9 for ajax link binding support
-* [Bootstrap styles](http://twitter.github.com/bootstrap) to look nice (>= 1.3 recommended)
+* [Bootstrap styles](http://twitter.github.com/bootstrap) 2.x to look nice
+
+## Migrating from earlier versions
+* Migration from 1.x:
+    * You will need bootstrap 2.x on your page
+    * Change your css markup for forms according to the bootstrap 2.0 (buttons always require `.btn`, `.primary` to `.btn-primary`, `.actions` to `.form-actions` and so forth. 
 
 ## Controlling a dialog with JavaScript
 
