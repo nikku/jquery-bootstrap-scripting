@@ -6,8 +6,10 @@
         <script type="text/javascript" src="js/jquery.1.6.2.min.js"></script>
         <script type="text/javascript" src="js/jquery.controls.js"></script>
         <script type="text/javascript" src="js/jquery.form.js"></script>
+        <script type="text/javascript" src="js/jquery.query.js"></script>
         <script type="text/javascript" src="../lib/jquery.dialog2.js"></script>
         <script type="text/javascript" src="../lib/jquery.dialog2.helpers.js"></script>
+        <script type="text/javascript" src="../lib/jquery.dialog2.iframe.js"></script>
         <script type="text/javascript" src="js/prettify.js"></script>
         
         <style type="text/css">
@@ -709,7 +711,7 @@
 							<tr><td><code>dialog2.closed</code></td><td>the dialog is closed</td><tr>
 						</tbody>
 					</table>
-					
+
 					<script type="text/javascript">
 						$(function() {
 							var eventLog = [];
@@ -758,6 +760,19 @@
 						});
 					</script>
 					
+                    <h2>Open external websites within an iframe in your modal</h2>
+                    
+                    <div class="activity">
+                        <p>
+                            Open <a href="pages/iframe.html" id="dialog-iframe" title="IFrame Content">a dialog</a> with an iframe inside.<br/>
+                            <a class="show-source-link" href="#">(View source)</a>
+                        </p>
+                    </div>
+
+                    <script type-"text/javascript">
+                        $('#dialog-iframe').dialog2IFrame();
+                    </script>
+
                     <h2>Clarification needed?</h2>
                     <p>
                         Check out the <a href="https://github.com/Nikku/jquery-bootstrap-scripting/#readme">plugin documentation</a>. 
