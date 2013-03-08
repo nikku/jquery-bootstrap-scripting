@@ -764,10 +764,24 @@
                     
                     <div class="activity">
                         <p>
-                            Open <a href="pages/iframe.html" id="dialog-iframe" title="IFrame Content">a dialog</a> with an iframe inside.<br/>
+                            Open <a href="pages/iframe.html" id="dialog-iframe" title="IFrame Title">a dialog</a> with an iframe inside.<br/>
                             <a class="show-source-link" href="#">(View source)</a>
                         </p>
                     </div>
+                    <div class="source">
+                        <h5>Source</h5>
+                            <pre class="prettyprint lang-html">
+&lt;a href=&quot;pages/iframe.html&quot; id=&quot;dialog-iframe&quot; title=&quot;IFrame Title&quot;&gt;open external url!&lt;/a&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+    $(function() {
+        $(&quot;#dialog-iframe&quot;).dialog2IFrame({
+            height: 300,
+            appendParamUrl: false,
+            reloadOnClose: false
+        });
+    });
+&lt;/script&gt;</pre>
+                        </div>
 
                     <script type-"text/javascript">
                         $('#dialog-iframe').dialog2IFrame();
