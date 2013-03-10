@@ -13,12 +13,14 @@ Contains some nice [jQuery](http://jquery.com) plugins to make working with the 
 * Localization
 * No dependencies to jQuery.UI
 * Control via [`html` markup](#let-the-markup-rule) possible
+* Load an external URL (using iframe) inside the modal
 
 ## Dependencies
 
 * [jQuery.form](http://jquery.malsup.com/form/) plugin >= 2.8 for ajax form submit 
 * [jQuery.controls](https://github.com/Nikku/jquery-controls) plugin  >= 0.9 for ajax link binding support
 * [Bootstrap styles](http://twitter.github.com/bootstrap) 2.x to look nice
+* [jQuery.query](http://archive.plugins.jquery.com/project/query-object) plugin for handling urls in jquery.dialog2.iframe
 
 ## Migrating from earlier versions
 * Migration from 1.x:
